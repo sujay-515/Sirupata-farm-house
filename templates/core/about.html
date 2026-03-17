@@ -1,0 +1,185 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+/* ---------- GLOBAL ---------- */
+.about-section {
+    padding: 80px 8%;
+    background: #faf9f6;
+}
+
+.about-block {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    margin-bottom: 100px;
+}
+
+.about-block.reverse {
+    flex-direction: row-reverse;
+}
+
+.about-text {
+    flex: 1;
+}
+
+.about-text h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #1b3a2b;
+}
+
+.about-text p {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #444;
+}
+
+.about-image {
+    flex: 1;
+}
+
+.about-image img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+/* ---------- NEARBY LOCATIONS ---------- */
+.nearby {
+    background: #f6f4ef;
+    padding: 80px 8%;
+    text-align: center;
+}
+
+.nearby h2 {
+    font-size: 36px;
+    margin-bottom: 50px;
+    color: #1b3a2b;
+}
+
+.nearby-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+}
+
+.nearby-card {
+    border: 1px solid #ccc;
+    padding: 30px 20px;
+    background: #fff;
+    transition: all 0.3s ease;
+}
+
+.nearby-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.nearby-card h4 {
+    color: #b9974d;
+    margin-bottom: 15px;
+}
+
+.nearby-card p {
+    font-size: 15px;
+    color: #555;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 900px) {
+    .about-block,
+    .about-block.reverse {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about-text h2 {
+        font-size: 28px;
+    }
+
+    .nearby h2 {
+        font-size: 28px;
+    }
+}
+</style>
+
+<!-- ================= ABOUT SECTION ================= -->
+<section class="about-section">
+
+    <!-- Sirupata Farm House -->
+    <div class="about-block">
+        <div class="about-image">
+            <img src="{% static "core/hero/farmhouse.jpg" %}" alt="Sirupata Farm House">
+        </div>
+        <div class="about-text">
+            <h2>Sirupata Farm House</h2>
+            <p>
+                Sirupata Farm House is a peaceful eco-retreat designed to reconnect guests with nature.
+                Surrounded by lush greenery, organic farms, and scenic hill views, it offers a calm and
+                refreshing escape from city life. Guests enjoy farm-to-table experiences, fresh air,
+                and authentic rural hospitality.
+            </p>
+        </div>
+    </div>
+
+    <!-- R-Star Hotel -->
+    <div class="about-block reverse">
+        <div class="about-image">
+            <img src="{% static 'images/rstar_hotel.jpg' %}" alt="R-Star Hotel">
+        </div>
+        <div class="about-text">
+            <h2>Sirupata R-Star Hotel</h2>
+            <p>
+                Sirupata R-Star Hotel blends modern luxury with warm hospitality.
+                Featuring premium rooms, fine dining, and elegant interiors, the hotel
+                is ideal for business travelers, families, and tourists seeking comfort,
+                convenience, and memorable stays in Butwal.
+            </p>
+        </div>
+    </div>
+
+</section>
+
+<!-- ================= NEARBY LOCATIONS ================= -->
+<section class="nearby">
+    <h2>Nearby Locations</h2>
+
+    <div class="nearby-grid">
+
+        <div class="nearby-card">
+            <h4>Butwal Chauraha</h4>
+            <p>Distance: 3.5 km<br>Time: 6 min</p>
+        </div>
+
+        <div class="nearby-card">
+            <h4>Rampur Palpa</h4>
+            <p>Distance: 44 km<br>Time: 1 hr 55 min</p>
+        </div>
+
+        <div class="nearby-card">
+            <h4>Tansen Palpa</h4>
+            <p>Distance: 44 km<br>Time: 1 hr 55 min</p>
+        </div>
+
+        <div class="nearby-card">
+            <h4>Lumbini</h4>
+            <p>Distance: 38 km<br>Time: 55 min</p>
+        </div>
+
+        <div class="nearby-card">
+            <h4>Sunouli Border</h4>
+            <p>Distance: 22 km<br>Time: 34 min</p>
+        </div>
+
+        <div class="nearby-card">
+            <h4>Gautam Buddha Airport</h4>
+            <p>Distance: 12 km<br>Time: 29 min</p>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

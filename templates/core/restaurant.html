@@ -1,0 +1,56 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Restaurant{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="restaurant-hero">
+    <img src="{{ restaurant.hero_image.url }}" alt="">
+    <div class="overlay">
+        <h1>{{ restaurant.name }}</h1>
+        <p>{{ restaurant.description }}</p>
+    </div>
+</section>
+
+<!-- GALLERY -->
+<section class="section">
+    <h2 class="title">Gallery</h2>
+    <div class="gallery-grid">
+        {% for img in gallery %}
+            <img src="{{ img.image.url }}" alt="{{ img.title }}">
+        {% endfor %}
+    </div>
+</section>
+
+<!-- SPECIAL DISHES -->
+<section class="section">
+    <h2 class="title">Chef’s Special</h2>
+    <div class="dish-grid">
+        {% for dish in dishes %}
+        <div class="dish-card">
+            <img src="{{ dish.image.url }}">
+            <h3>{{ dish.name }}</h3>
+            <p>{{ dish.description }}</p>
+            <strong>Rs. {{ dish.price }}</strong>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- OFFERS -->
+<section class="section dark">
+    <h2 class="title">Special Offers</h2>
+    <div class="offer-grid">
+        {% for offer in offers %}
+        <div class="offer-card">
+            <h3>{{ offer.title }}</h3>
+            <p>{{ offer.description }}</p>
+            <strong>Rs. {{ offer.price }}</strong>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

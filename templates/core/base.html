@@ -1,0 +1,644 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{% block title %}Sirupata R-Star{% endblock %}</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <!-- Icons & Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root{
+      --header-height: 86px;
+      --dark: #0f2e23;
+      --gold: #c9a24d;
+      --gold-light: #e6c77a;
+      --bg: #f6f7f4;
+      --container: 1300px;
+    }
+
+    *,*::before,*::after{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
+    body{
+      margin:0;
+      font-family:'Poppins',sans-serif;
+      background:var(--bg);
+      color:#222;
+      padding-top:var(--header-height);
+      -webkit-font-smoothing:antialiased;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+
+    /* ===== HEADER ===== */
+    header{
+      position:fixed;
+      top:0; left:0; right:0;
+      height:var(--header-height);
+      z-index:400;
+      background:transparent;
+      transition:all .25s ease;
+      display:flex;
+      align-items:center;
+    }
+
+    header.scrolled{
+      background:rgba(15,46,35,.98);
+      box-shadow:0 6px 30px rgba(0,0,0,.3);
+      border-bottom:2px solid var(--gold);
+    }
+
+    .nav-wrap{
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:0 30px;
+      gap:20px;
+    }
+
+    .logo{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      color:var(--gold);
+    }
+
+    .logo i{ font-size:28px; color:var(--gold-light); }
+
+    .logo .title{
+      font-family:'Playfair Display',serif;
+      font-size:20px;
+      font-weight:600;
+      line-height:1;
+    }
+
+    .logo .subtitle{
+      display:block;
+      font-size:11px;
+      color:#ddd;
+      letter-spacing:.4px;
+    }
+
+    nav.main-nav{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      white-space:nowrap;
+    }
+
+    nav.main-nav a{
+      color:#fff;
+      font-size:14px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    nav.main-nav a i{ color:var(--gold); }
+
+    .btn-book{
+      background:var(--gold);
+      color:#000;
+      padding:9px 16px;
+      border-radius:6px;
+      font-weight:600;
+    }
+
+    /* ===== HERO ===== */
+    .hero-slot{
+      margin-top:calc(-1 * var(--header-height));
+    }
+
+    .hero-slider{
+      height:85vh;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero-slider .slide{
+      position:absolute;
+      inset:0;
+      background-size:cover;
+      background-position:center;
+      opacity:0;
+      transition:opacity 1s ease;
+    }
+
+    .hero-slider .slide.active{ opacity:1; }
+
+    .hero-slider .overlay{
+      background:rgba(0,0,0,.45);
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      padding-left:6%;
+      padding-bottom:14%;
+      color:#fff;
+    }
+
+    .hero-slider h1{
+      font-family:'Playfair Display',serif;
+      font-size:48px;
+      margin-bottom:8px;
+    }
+
+    .hero-slider p{
+      font-size:16px;
+      max-width:600px;
+    }
+    restaurant-hero {
+    position: relative;
+    height: 70vh;
+}
+
+.restaurant-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.restaurant-hero .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 30px;
+}
+
+.section {
+    padding: 80px 20px;
+}
+
+.section.dark {
+    background: #111;
+    color: #fff;
+}
+
+.title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+}
+
+/* DISHES */
+.dish-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+}
+
+.dish-card {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,.15);
+}
+
+.dish-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.dish-card .info {
+    padding: 20px;
+}
+
+.dish-card span {
+    color: #c9a24d;
+    font-weight: 600;
+}
+
+/* OFFERS */
+.offer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+}
+
+.offer-card {
+    background: #1b1b1b;
+    padding: 30px;
+    border-radius: 14px;
+    border: 1px solid #c9a24d;
+}
+
+
+    main{
+      max-width:var(--container);
+      margin:auto;
+      padding:70px 20px 90px;
+    }
+
+    footer{
+      background:var(--dark);
+      color:#ddd;
+      padding:50px 0;
+      text-align:center;
+    }
+
+    /* ===== FEATURE SECTIONS ===== */
+    .feature-blocks{
+      margin-top:140px;
+    }
+
+    .feature-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:60px;
+      align-items:center;
+      margin-bottom:120px;
+    }
+
+    .feature-row.reverse{
+      direction:rtl;
+    }
+    .feature-row.reverse > *{
+      direction:ltr;
+    }
+
+    .feature-image img{
+      width:100%;
+      height:420px;
+      object-fit:cover;
+      border-radius:14px;
+    }
+
+    .feature-content h3{
+      font-family:'Playfair Display',serif;
+      font-size:34px;
+      color:var(--dark);
+      margin-bottom:14px;
+    }
+
+    .feature-content p{
+      font-size:15px;
+      line-height:1.8;
+      max-width:520px;
+    }
+
+    /* ===== ADDED: IMAGE SLIDER (NO CONFLICT) ===== */
+    .slider{
+      position:relative;
+      overflow:hidden;
+      border-radius:14px;
+    }
+
+    .slider-track{
+      display:flex;
+      transition:transform .5s ease;
+    }
+
+    .slider img{
+      width:100%;
+      height:420px;
+      object-fit:cover;
+      flex-shrink:0;
+    }
+
+    .slider-btn{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      background:rgba(0,0,0,.55);
+      color:#fff;
+      border:none;
+      padding:10px 14px;
+      cursor:pointer;
+      font-size:18px;
+      border-radius:50%;
+    }
+
+    .slider-btn.prev{ left:12px; }
+    .slider-btn.next{ right:12px; }
+
+    /* =========================
+       📱 MOBILE ADAPTATION ONLY
+       ========================= */
+
+    @media (max-width: 900px){
+      :root{ --header-height:72px; }
+
+      body{ padding-top:var(--header-height); }
+
+      .nav-wrap{
+        padding:0 16px;
+        flex-wrap:wrap;
+        justify-content:center;
+      }
+
+      nav.main-nav{
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:14px;
+      }
+
+      .hero-slider h1{
+        font-size:36px;
+      }
+
+      .feature-row{
+        grid-template-columns:1fr;
+        gap:30px;
+        margin-bottom:80px;
+      }
+
+      .feature-image img,
+      .slider img{
+        height:260px;
+      }
+
+      .feature-content h3{
+        font-size:26px;
+      }
+    }
+
+    @media (max-width: 640px){
+      .logo .title{ font-size:18px; }
+      .logo i{ font-size:22px; }
+
+      .hero-slider{
+        height:80vh;
+      }
+
+      .hero-slider .overlay{
+        padding-left:20px;
+        padding-right:20px;
+        padding-bottom:18%;
+        align-items:center;
+        text-align:center;
+      }
+
+      .hero-slider h1{
+        font-size:28px;
+      }
+
+      .hero-slider p{
+        font-size:14px;
+        max-width:90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="nav-wrap">
+     <a href="/" class="logo">
+       <i class="fa-solid fa-leaf"></i> 
+       <div>
+         <span class="title">Sirupata R-Star</span>
+         <span class="subtitle">Eco Farm Stay & Hotel</span>
+        </div> 
+      </a>
+      <nav class="main-nav">
+        <a href="/"><i class="fa-solid fa-house"></i>Home</a>
+        <a href="/about/"><i class="fa-solid fa-circle-info"></i>About</a>
+        <a href="/rooms/"><i class="fa-solid fa-bed"></i>Rooms</a> 
+        <a href="/hotel/"><i class="fa-solid fa-hotel"></i>Hotel</a> 
+        <a href="/restaurant/"><i class="fa-solid fa-utensils"></i>Restaurant</a> 
+        <a href="/gallery/"><i class="fa-solid fa-image"></i>Gallery</a> 
+        <a href="/contact/"><i class="fa-solid fa-phone"></i>Contact</a> 
+        <a href="/bookings/" class="btn-book"> <i class="fa-solid fa-calendar-check"></i>Book Online </a> 
+      </nav> 
+  </div> 
+</header>
+<div class="hero-slot">
+  {% block hero %}{% endblock %}
+</div>
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<footer style="background:#000;padding:70px 0 30px;color:#ddd;margin-top:160px;">
+
+  <div style="
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:2fr 2fr 1.5fr;
+    gap:60px;
+    padding:0 20px;
+  ">
+
+    <!-- LEFT : LOGO + DESCRIPTION -->
+    <div>
+      <h2 style="
+        font-family:'Playfair Display',serif;
+        color:#c9a24d;
+        font-size:34px;
+        margin-bottom:12px;
+      ">
+        Sirupata R-Star
+      </h2>
+
+      <p style="line-height:1.8;font-size:14px;color:#ccc;">
+        A premium eco farm stay and hilltop resort offering luxury rooms,
+        fine dining, organic farming experiences, and peaceful nature living.
+      </p>
+    </div>
+
+    <!-- CENTER : CONTACT -->
+    <div>
+      <h3 style="color:#c9a24d;margin-bottom:18px;">Contact Us</h3>
+
+      <p style="margin-bottom:14px;">
+        <i class="fa-solid fa-phone" style="color:#c9a24d;"></i>
+        +977-98XXXXXXXX
+      </p>
+
+      <p style="margin-bottom:14px;">
+        <i class="fa-solid fa-envelope" style="color:#c9a24d;"></i>
+        info@sirupatarstar.com
+      </p>
+
+      <p>
+        <i class="fa-solid fa-location-dot" style="color:#c9a24d;"></i>
+        Sirupata, Hilltop Area, Nepal
+      </p>
+    </div>
+
+   <!-- RIGHT : JOIN US -->
+<div>
+  <h3 style="color:#c9a24d;margin-bottom:18px;">Join Us</h3>
+
+  <p style="font-size:14px;color:#ccc;margin-bottom:18px;">
+    Follow us on social media and stay connected with Sirupata R-Star.
+  </p>
+
+  <div style="display:flex;gap:18px;align-items:center;">
+
+    <!-- Facebook -->
+    <a href="https://facebook.com/" target="_blank"
+       style="font-size:34px;color:#c9a24d;">
+      <i class="fa-brands fa-facebook"></i>
+    </a>
+
+    <!-- Instagram -->
+    <a href="https://instagram.com/" target="_blank"
+       style="font-size:34px;color:#c9a24d;">
+      <i class="fa-brands fa-instagram"></i>
+    </a>
+
+    <!-- WhatsApp -->
+    <a href="https://wa.me/97798XXXXXXXX" target="_blank"
+       style="font-size:34px;color:#c9a24d;">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+  </div>
+</div>
+
+
+  </div>
+
+  <!-- BOTTOM LINE -->
+  <div style="
+    border-top:1px solid #222;
+    margin-top:50px;
+    padding-top:20px;
+    text-align:center;
+    font-size:13px;
+    color:#aaa;
+  ">
+    © {{ now|date:"Y" }} Sirupata R-Star. All Rights Reserved.
+  </div>
+
+</footer>
+
+
+<script>
+  const header = document.querySelector("header");
+  window.addEventListener("scroll",()=>{
+    header.classList.toggle("scrolled",window.scrollY>20);
+  });
+
+  const slides=document.querySelectorAll(".slide");
+  if(slides.length>1){
+    let i=0;
+    setInterval(()=>{
+      slides[i].classList.remove("active");
+      i=(i+1)%slides.length;
+      slides[i].classList.add("active");
+    },4000);
+  }
+
+  /* ===== ADDED: SLIDER SCRIPT ===== */
+  document.querySelectorAll(".slider").forEach(slider=>{
+    let index=0;
+    const track=slider.querySelector(".slider-track");
+    const images=slider.querySelectorAll("img");
+
+    slider.querySelector(".next").onclick=()=>{
+      index=(index+1)%images.length;
+      track.style.transform=`translateX(-${index*100}%)`;
+    };
+
+    slider.querySelector(".prev").onclick=()=>{
+      index=(index-1+images.length)%images.length;
+      track.style.transform=`translateX(-${index*100}%)`;
+    };
+  });
+</script>
+<!-- Add this CSS in your style block or in static/css/style.css -->
+<style>
+    .review-card {
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .review-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+        border-color: transparent;
+    }
+    
+    .hover-shadow {
+        transition: box-shadow 0.3s ease;
+    }
+    
+    .hover-shadow:hover {
+        box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.15)!important;
+    }
+    
+    .rating-summary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    
+    .rating-summary .text-muted {
+        color: rgba(255,255,255,0.8) !important;
+    }
+    
+    .modal-content {
+        border-radius: 20px;
+    }
+    
+    .modal-header {
+        border-radius: 20px 20px 0 0;
+        padding: 1.5rem;
+    }
+    
+    .form-control, .form-select {
+        padding: 0.75rem 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102,126,234,0.1);
+    }
+    
+    .toast {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+    }
+</style>
+
+<!-- Add this JavaScript for the toasts -->
+<script>
+    // Auto-hide toasts after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        const toasts = document.querySelectorAll('.toast');
+        toasts.forEach(toast => {
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 5000);
+        });
+    });
+  
+</script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- 2. Bootstrap JavaScript (THIS IS CRITICAL FOR MODALS!) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 3. Your custom JavaScript -->
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

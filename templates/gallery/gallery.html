@@ -1,0 +1,113 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+.gallery-page {
+    padding: 80px 6%;
+    background: #faf9f6;
+}
+
+.gallery-page h1 {
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 60px;
+    color: #1b3a2b;
+}
+
+.gallery-category {
+    margin-bottom: 70px;
+}
+
+.gallery-category h2 {
+    font-size: 28px;
+    margin-bottom: 25px;
+    color: #b9974d;
+}
+
+.gallery-grid {
+    columns: 4 250px;
+    column-gap: 20px;
+}
+
+.gallery-item {
+    margin-bottom: 20px;
+    position: relative;
+    cursor: pointer;
+}
+
+.gallery-item img {
+    width: 100%;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+/* Lightbox */
+.lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.lightbox.active {
+    display: flex;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .gallery-grid {
+        columns: 2 150px;
+    }
+}
+</style>
+
+<section class="gallery-page">
+    <h1>Gallery</h1>
+
+    {% for category in categories %}
+        {% if category.images.all %}
+        <div class="gallery-category">
+            <h2>{{ category.name }}</h2>
+
+            <div class="gallery-grid">
+                {% for img in category.images.all %}
+                    <div class="gallery-item" onclick="openLightbox('{{ img.image.url }}')">
+                        <img src="{{ img.image.url }}" alt="{{ img.title }}">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+</section>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img">
+</div>
+
+<script>
+function openLightbox(src) {
+    document.getElementById("lightbox").classList.add("active");
+    document.getElementById("lightbox-img").src = src;
+}
+
+function closeLightbox() {
+    document.getElementById("lightbox").classList.remove("active");
+}
+</script>
+
+{% endblock %}

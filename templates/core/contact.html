@@ -1,0 +1,159 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Contact Us | Sirupata R-Star{% endblock %}
+
+{% block content %}
+<style>
+.contact-wrapper{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:60px;
+  background:#f8f6f2;
+  padding:80px;
+  border-radius:12px;
+}
+
+.contact-info h2{
+  font-family:'Playfair Display',serif;
+  font-size:36px;
+  margin-bottom:20px;
+}
+
+.contact-info p{
+  font-size:15px;
+  line-height:1.8;
+  margin-bottom:30px;
+}
+
+.contact-info .item{
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  margin-bottom:22px;
+}
+
+.contact-info i{
+  font-size:20px;
+  color:#c9a24d;
+  margin-top:4px;
+}
+
+.contact-form{
+  background:#3f3f3f;
+  padding:50px;
+  border-radius:10px;
+}
+
+.contact-form h3{
+  color:#fff;
+  margin-bottom:30px;
+  font-family:'Playfair Display',serif;
+  font-size:28px;
+}
+
+.contact-form input,
+.contact-form textarea{
+  width:100%;
+  padding:14px;
+  margin-bottom:18px;
+  border:none;
+  outline:none;
+  background:#555;
+  color:#fff;
+  font-size:14px;
+}
+
+.contact-form textarea{
+  height:120px;
+  resize:none;
+}
+
+.contact-form button{
+  background:#c9a24d;
+  border:none;
+  padding:14px;
+  width:100%;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.success-msg{
+  background:#d4edda;
+  padding:12px;
+  margin-bottom:20px;
+  color:#155724;
+  border-radius:6px;
+}
+</style>
+
+<div class="contact-wrapper">
+
+  <!-- LEFT -->
+  <div class="contact-info">
+    <h2>Hotel Sirupata R-Star</h2>
+    <p>
+      Experience premium eco farm stay hospitality with luxury rooms,
+      organic dining, and peaceful nature living.
+    </p>
+
+    <div class="item">
+      <i class="fa-solid fa-phone"></i>
+      <div>
+        <strong>Call Us</strong><br>
+        +977-98XXXXXXXX
+      </div>
+    </div>
+
+    <div class="item">
+      <i class="fa-solid fa-envelope"></i>
+      <div>
+        <strong>Email</strong><br>
+        info@sirupatarstar.com
+      </div>
+    </div>
+
+    <div class="item">
+      <i class="fa-solid fa-location-dot"></i>
+      <div>
+        <strong>Location</strong><br>
+        Sirupata, Hilltop Area, Nepal
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="contact-form">
+    <h3>Get In Touch</h3>
+
+    {% if success %}
+      <div class="success-msg">
+        Your message has been sent successfully!
+      </div>
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <input type="text" name="subject" placeholder="Subject" required>
+      <textarea name="message" placeholder="Write Message" required></textarea>
+      <button type="submit">SEND MESSAGE</button>
+    </form>
+  </div>
+
+</div>
+
+<!-- GOOGLE MAP -->
+<div style="margin-top:80px;">
+  <iframe
+    src="https://www.google.com/maps?q=Sirupata%20Nepal&output=embed"
+    width="100%"
+    height="420"
+    style="border:0;"
+    allowfullscreen=""
+    loading="lazy">
+  </iframe>
+</div>
+
+{% endblock %}

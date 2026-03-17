@@ -1,0 +1,110 @@
+{% extends "core/base.html" %}
+{% block title %}Book Online{% endblock %}
+
+{% block content %}
+
+<style>
+.booking-bar{
+  background:#fff;
+  border-radius:20px;
+  padding:22px 26px;
+  box-shadow:0 25px 80px rgba(0,0,0,.12);
+  display:grid;
+  grid-template-columns:repeat(6,1fr) auto;
+  gap:16px;
+  align-items:end;
+}
+
+.booking-bar label{
+  font-size:13px;
+  font-weight:500;
+  display:block;
+  margin-bottom:4px;
+}
+
+.booking-bar input,
+.booking-bar select{
+  width:100%;
+  padding:10px 12px;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+.booking-bar button{
+  background:#c9a24d;
+  color:#000;
+  border:none;
+  padding:14px 26px;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+}
+</style>
+
+<h2 style="text-align:center;font-family:'Playfair Display',serif;margin-bottom:40px;">
+  Book Online
+</h2>
+
+<form method="POST" class="booking-bar">
+  {% csrf_token %}
+
+  <div>
+    <label>Check-in</label>
+    <input type="date" name="checkin" required>
+  </div>
+
+  <div>
+    <label>Check-out</label>
+    <input type="date" name="checkout" required>
+  </div>
+
+  <div>
+    <label>Guests</label>
+    <select name="guests">
+      <option>1 Guest</option>
+      <option>2 Guests</option>
+      <option>3 Guests</option>
+      <option>4+ Guests</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Room</label>
+    <select name="room">
+      <option>Farmhouse Suite</option>
+      <option>Deluxe Room</option>
+      <option>Luxury Suite</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Phone</label>
+    <input type="tel" name="phone">
+  </div>
+
+  <div>
+    <label>Email</label>
+    <input type="email" name="email">
+  </div>
+
+  <button type="submit">Book Room</button>
+</form>
+{% if success %}
+  <p style="color:green;font-weight:600;">Booking successful ✔</p>
+{% endif %}
+
+{% if error %}
+  <p style="color:red;">{{ error }}</p>
+{% endif %}
+
+{% if data %}
+<hr style="margin:50px 0;">
+<h3>Booking Received ✔</h3>
+<p><strong>Room:</strong> {{ data.room }}</p>
+<p><strong>Check-in:</strong> {{ data.checkin }}</p>
+<p><strong>Check-out:</strong> {{ data.checkout }}</p>
+<p><strong>Phone:</strong> {{ data.phone }}</p>
+{% endif %}
+
+
+{% endblock %}

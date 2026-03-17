@@ -1,0 +1,511 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Home | Sirupata R-Star{% endblock %}
+
+{% block hero %}
+<section class="hero-slider">
+
+  <div class="slide active"
+       style="background-image:url('{% static "core/hero/farmhouse.jpg" %}')">
+    <div class="overlay">
+      <h1>Sirupata Farmhouse</h1>
+      <p>Peaceful eco living surrounded by nature</p>
+    </div>
+  </div>
+
+  <div class="slide"
+       style="background-image:url('{% static "core/hero/hotel.jpg" %}')">
+    <div class="overlay">
+      <h1>R-ASDA Hotel & Restaurant</h1>
+      <p>Luxury suites and fine dining experience</p> 
+    </div>
+  </div>
+
+</section>
+{% endblock %}
+
+{% block content %}
+
+<!-- WELCOME SECTION -->
+<section style="max: width 1600px;px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;">
+
+<div style="max: width 1600px;px;">
+  {% if video %}
+  <video controls style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;">
+      <source src="{{ video.video.url }}" type="video/mp4">
+  </video>
+  {% else %}
+      <p>No video uploaded yet.</p>
+  {% endif %}
+</div>
+  <div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:36px;color:#0f2e23;">
+      Welcome to Sirupata R-Star
+    </h2>
+    <p>
+      A premium eco farm stay combined with modern hotel luxury.
+      Relax, dine, and stay in harmony with nature.
+      Discover our hilltop resort, woven into the fabric of a working farm ecosystem.
+    </p>
+
+    <a href="/about/"
+       style="display:inline-block;margin-top:20px;padding:12px 26px;background:#c9a24d;color:#000;font-weight:600;border-radius:6px;">
+      Learn More About Us
+    </a>
+  </div>
+
+</section>
+
+<!-- ICON FEATURES -->
+<section
+  style="
+    margin-top:100px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:80px 120px;
+    text-align:center;
+    max-width:900px;
+    margin-left:auto;
+    margin-right:auto;
+  "
+>
+
+  <div>
+    <i class="fa-solid fa-hotel" style="font-size:42px;color:#c9a24d;"></i>
+    <h3>Luxury Hotel</h3>
+    <p>Modern rooms, premium comfort, peaceful stay.</p>
+  </div>
+
+  <div>
+    <i class="fa-solid fa-utensils" style="font-size:42px;color:#c9a24d;"></i>
+    <h3>Restaurant</h3>
+    <p>Fresh farm-to-table dining experience.</p>
+  </div>
+
+  <div>
+    <i class="fa-solid fa-seedling" style="font-size:42px;color:#c9a24d;"></i>
+    <h3>Organic Farm</h3>
+    <p>Natural farming with fresh produce.</p>
+  </div>
+
+  <div>
+    <i class="fa-solid fa-users" style="font-size:42px;color:#c9a24d;"></i>
+    <h3>Events & Gatherings</h3>
+    <p>Perfect for family and private events.</p>
+  </div>
+
+</section>
+
+
+
+
+
+
+<section style="
+  margin-top:220px;
+  padding-top:40px;
+  max-width:1200px;
+  margin-left:auto;
+  margin-right:auto;
+">
+
+
+  <span style="color:#c9a24d;letter-spacing:2px;font-size:13px;">EXPERIENCES</span>
+
+  <h2 style="font-family:'Playfair Display',serif;font-size:42px;margin-top:10px;">
+    Enjoy Complete & Best Quality Services
+  </h2>
+
+  <hr style="margin:30px 0;border:none;border-top:1px solid #ddd;">
+
+  <!-- ===== 01 FARM EXPERIENCE ===== -->
+  <div class="feature-row">
+
+    <div class="facility-slider">
+      <img class="fs-slide active" src="{% static 'core/sections/farm1.jpg' %}">
+      <img class="fs-slide" src="{% static 'core/sections/farm2.jpg' %}">
+      <img class="fs-slide" src="{% static 'core/sections/farm3.jpg' %}">
+    </div>
+
+    <div>
+      <span style="color:#c9a24d;font-size:22px;">01</span>
+      <p style="color:#c9a24d;letter-spacing:1px;">FARM EXPERIENCE</p>
+      <h3 style="font-family:'Playfair Display',serif;font-size:30px;">
+        Authentic Organic Farm Living
+      </h3>
+      <p>
+        Hands-on farming, fresh harvests, and peaceful rural surroundings
+        that reconnect you with nature.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ===== 02 HILLTOP RESORT ===== -->
+  <div class="feature-row reverse">
+
+    <div class="facility-slider">
+      <img class="fs-slide active" src="{% static 'core/sections/hill1.jpg' %}">
+      <img class="fs-slide" src="{% static 'core/sections/hill2.jpg' %}">
+      <img class="fs-slide" src="{% static 'core/sections/hill3.jpg' %}">
+    </div>
+
+    <div>
+      <span style="color:#c9a24d;font-size:22px;">02</span>
+      <p style="color:#c9a24d;letter-spacing:1px;">HILLTOP RESORT</p>
+      <h3 style="font-family:'Playfair Display',serif;font-size:30px;">
+        Scenic Hilltop Escape
+      </h3>
+      <p>
+        Wake up to breathtaking views, fresh mountain air,
+        and luxurious comfort designed for rest and rejuvenation.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ===== 03 EVENT & DINING ===== -->
+  <div class="feature-row">
+
+    <div class="facility-slider">
+      <img class="fs-slide active" src="{% static 'core/sections/event1.jpg' %}">
+      <img class="fs-slide" src="{% static 'core/sections/event2.jpg' %}">
+      <img class="fs-slide" src="{% static 'core/sections/event3.jpg' %}">
+    </div>
+
+    <div>
+      <span style="color:#c9a24d;font-size:22px;">03</span>
+      <p style="color:#c9a24d;letter-spacing:1px;">EVENT & DINING</p>
+      <h3 style="font-family:'Playfair Display',serif;font-size:30px;">
+        Fine Dining & Memorable Events
+      </h3>
+      <p>
+        Celebrate special moments with curated menus,
+        elegant venues, and warm hospitality.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= SLIDER SCRIPT ================= -->
+<script>
+  document.querySelectorAll(".facility-slider").forEach(slider => {
+    const slides = slider.querySelectorAll(".fs-slide");
+    let index = 0;
+
+    setInterval(() => {
+      slides[index].classList.remove("active");
+      index = (index + 1) % slides.length;
+      slides[index].classList.add("active");
+    }, 3500);
+  });
+</script>
+
+<style>
+  .facility-slider{
+    position:relative;
+    height:420px;
+    overflow:hidden;
+    border-radius:14px;
+  }
+  .facility-slider img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:0;
+    transition:opacity 1s ease;
+  }
+  .facility-slider img.active{
+    opacity:1;
+  }
+</style>
+ 
+ 
+
+<!-- YOUR EXISTING HOMEPAGE CONTENT HERE (hero section, about, etc.) -->
+
+<<section class="reviews-section py-5">
+    <div class="container">
+        <!-- Section Title with Story Icon -->
+        <div class="text-center mb-5">
+            <div class="story-icon mb-3">
+                <i class="fas fa-book-open fa-3x text-primary"></i>
+            </div>
+            <h2 class="display-5 fw-bold">Guest Stories</h2>
+            <p class="lead text-muted">Real experiences from our wonderful guests</p>
+        </div>
+
+        <!-- Reviews Grid - 5 Stars All Around -->
+        <div class="row g-4">
+            {% for review in reviews %}
+            <div class="col-lg-4 col-md-6">
+                <div class="review-card">
+                    <!-- 5 Stars at top -->
+                    <div class="stars-container mb-3">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <span class="ms-2 text-muted">5/5</span>
+                    </div>
+                    
+                    <!-- Review Title -->
+                    <h5 class="review-title fw-bold mb-3">
+                        "{{ review.review_title }}"
+                    </h5>
+                    
+                    <!-- Review Text -->
+                    <p class="review-text text-muted mb-4">
+                        {{ review.review_text }}
+                    </p>
+                    
+                    <!-- Reviewer Info with Icon -->
+                    <div class="reviewer-info d-flex align-items-center">
+                        <div class="reviewer-avatar me-3">
+                            <i class="fas fa-user-circle fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-0">{{ review.user_name }}</h6>
+                            <small class="text-muted">
+                                <i class="far fa-calendar-alt me-1"></i>
+                                {{ review.created_at|date:"F d, Y" }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Write Your Review Button with Story Icon -->
+        <div class="text-center mt-5">
+            <button type="button" class="btn btn-primary btn-lg px-5 py-3 rounded-pill" 
+                    data-bs-toggle="modal" data-bs-target="#reviewModal">
+                <i class="fas fa-pen-fancy me-2"></i>
+                Write Your Story
+                <i class="fas fa-book ms-2"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- ===== REVIEW MODAL - For Writing Reviews ===== -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-book-open me-2"></i>
+                    Write Your Story
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form method="post" action="{% url 'submit_review' %}">
+                    {% csrf_token %}
+                    
+                    <!-- Name Field -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fas fa-user text-primary me-2"></i>Your Name <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" name="user_name" class="form-control" placeholder="Enter your name" required>
+                    </div>
+                    
+                    <!-- Email Field (Optional) -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fas fa-envelope text-primary me-2"></i>Email <span class="text-muted">(Optional)</span>
+                        </label>
+                        <input type="email" name="user_email" class="form-control" placeholder="Enter your email">
+                        <small class="text-muted">Get notified when your story is published</small>
+                    </div>
+                    
+                    <!-- Rating Field - Default to 5 Stars -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fas fa-star text-warning me-2"></i>Rating <span class="text-danger">*</span>
+                        </label>
+                        <select name="rating" class="form-control" required>
+                            <option value="5" selected>⭐⭐⭐⭐⭐ - Excellent</option>
+                            <option value="4">⭐⭐⭐⭐ - Very Good</option>
+                            <option value="3">⭐⭐⭐ - Good</option>
+                            <option value="2">⭐⭐ - Fair</option>
+                            <option value="1">⭐ - Poor</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Review Title -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fas fa-heading text-primary me-2"></i>Story Title
+                        </label>
+                        <input type="text" name="review_title" class="form-control" placeholder="Give your story a title">
+                    </div>
+                    
+                    <!-- Review Text -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fas fa-book text-primary me-2"></i>Your Story <span class="text-danger">*</span>
+                        </label>
+                        <textarea name="review_text" class="form-control" rows="4" 
+                                  placeholder="Share your experience with us..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill">
+                        <i class="fas fa-paper-plane me-2"></i>
+                        Publish Your Story
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Messages Toast -->
+{% if messages %}
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+    {% for message in messages %}
+    <div class="toast show align-items-center text-white bg-{% if message.tags == 'success' %}success{% else %}danger{% endif %} border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="fas fa-{% if message.tags == 'success' %}check-circle{% else %}exclamation-circle{% endif %} me-2"></i>
+                {{ message }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- CSS for Reviews Section -->
+<style>
+.reviews-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.review-card {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    height: 100%;
+    border: 1px solid rgba(102,126,234,0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.review-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(102,126,234,0.2);
+}
+
+.review-card::before {
+    content: '\f10d';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-size: 60px;
+    color: rgba(102,126,234,0.1);
+    opacity: 0.5;
+}
+
+.stars-container {
+    color: #ffc107;
+    font-size: 1.2rem;
+}
+
+.review-title {
+    color: #2d3748;
+    line-height: 1.4;
+    font-size: 1.1rem;
+}
+
+.review-text {
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.reviewer-avatar i {
+    color: #667eea;
+}
+
+.modal-content {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.modal-header {
+    border-bottom: none;
+    padding: 20px 30px;
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.form-control, .form-select {
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 12px 15px;
+    transition: all 0.3s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(102,126,234,0.4);
+}
+
+.toast {
+    border-radius: 12px;
+}
+
+/* Animation for story icon */
+.fa-book-open {
+    animation: bookOpen 2s infinite;
+}
+
+@keyframes bookOpen {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(5deg); }
+}
+</style>
+
+<!-- JavaScript for Toasts -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-hide toasts after 5 seconds
+    const toasts = document.querySelectorAll('.toast');
+    toasts.forEach(toast => {
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 5000);
+    });
+});
+</script>
+
+ 
+
+{% endblock %}

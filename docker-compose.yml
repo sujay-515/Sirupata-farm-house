@@ -1,0 +1,69 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  # MySQL database service
+  db:
+    image: mysql:8.0
+    container_name: sirupata_mysql
+    restart: always
+    ports:
+      - "3307:3306"  # Use port 3307 on host to avoid conflicts
+    environment:
+      MYSQL_ROOT_PASSWORD: Password
+      MYSQL_DATABASE: sirupata_db
+      MYSQL_USER: sirupata_user
+      MYSQL_PASSWORD: sirupata_pass123
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - sirupata_network
+    command: --default-authentication-plugin=mysql_native_password
+
+  # Django web application
+  web:
+    build: .
+    container_name: sirupata_web
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    environment:
+      - DB_NAME=sirupata_db
+      - DB_USER=root
+      - DB_PASSWORD=Password
+      - DB_HOST=db  # This points to the db service
+      - DB_PORT=3306
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=True
+      - SITE_URL=http://localhost:8000
+      - SITE_NAME=Sirupata R Star
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - sirupata_network
+    command: >
+      sh -c "
+      echo 'Waiting for database...' &&
+      sleep 10 &&
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000
+      "
+
+# Volumes for persistent data
+volumes:
+  mysql_data:
+  static_volume:
+  media_volume:
+
+# Network
+networks:
+  sirupata_network:
+    driver: bridge

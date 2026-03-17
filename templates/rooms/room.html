@@ -1,0 +1,172 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Rooms | Sirupata R-Star{% endblock %}
+
+{% block content %}
+
+<!-- PAGE HEADER -->
+<section style="
+  background:#0f2e23;
+  color:#fff;
+  padding:80px 20px;
+  text-align:center;
+">
+  <h1 style="font-family:'Playfair Display',serif;font-size:42px;">
+    Our Rooms
+  </h1>
+  <p style="max-width:600px;margin:10px auto 0;">
+    Comfort, elegance, and nature combined for a perfect stay.
+  </p>
+</section>
+
+<!-- ROOMS GRID -->
+<section class="rooms-grid" style="
+  max-width:1200px;
+  margin:100px auto;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:40px;
+  padding:0 20px;
+">
+
+  <!-- DELUXE ROOM -->
+  <div class="room-card">
+    <img src="{% static 'core/rooms/deluxe.jpg' %}">
+    <div class="room-content">
+      <h3>Deluxe Room</h3>
+      <p class="price">NPR 4,500 / night</p>
+
+      <div class="amenities">
+        <span><i class="fa-solid fa-bed"></i> King Bed</span>
+        <span><i class="fa-solid fa-wifi"></i> Free Wi-Fi</span>
+        <span><i class="fa-solid fa-mug-hot"></i> Breakfast</span>
+        <span><i class="fa-solid fa-mountain"></i> View</span>
+      </div>
+
+      <a href="/bookings/" class="btn-book-room">Book This Room</a>
+    </div>
+  </div>
+
+  <!-- FAMILY ROOM -->
+  <div class="room-card">
+    <img src="{% static 'core/rooms/family.jpg' %}">
+    <div class="room-content">
+      <h3>Family Room</h3>
+      <p class="price">NPR 6,500 / night</p>
+
+      <div class="amenities">
+        <span><i class="fa-solid fa-users"></i> 4 Guests</span>
+        <span><i class="fa-solid fa-wifi"></i> Free Wi-Fi</span>
+        <span><i class="fa-solid fa-tv"></i> Smart TV</span>
+        <span><i class="fa-solid fa-mug-hot"></i> Breakfast</span>
+      </div>
+
+      <a href="/bookings/" class="btn-book-room">Book This Room</a>
+    </div>
+  </div>
+
+  <!-- SUITE ROOM -->
+  <div class="room-card">
+    <img src="{% static 'core/rooms/suite.jpg' %}">
+    <div class="room-content">
+      <h3>Suite Room</h3>
+      <p class="price">NPR 9,000 / night</p>
+
+      <div class="amenities">
+        <span><i class="fa-solid fa-couch"></i> Living Area</span>
+        <span><i class="fa-solid fa-wifi"></i> Free Wi-Fi</span>
+        <span><i class="fa-solid fa-bath"></i> Bathtub</span>
+        <span><i class="fa-solid fa-mountain"></i> Panoramic View</span>
+      </div>
+
+      <a href="/bookings/" class="btn-book-room">Book This Room</a>
+    </div>
+  </div>
+
+  <!-- FARMHOUSE SUITE -->
+  <div class="room-card">
+    <img src="{% static 'core/rooms/farmhouse-suite.jpg' %}">
+    <div class="room-content">
+      <h3>Farmhouse Suite</h3>
+      <p class="price">NPR 7,500 / night</p>
+
+      <div class="amenities">
+        <span><i class="fa-solid fa-tree"></i> Garden View</span>
+        <span><i class="fa-solid fa-door-open"></i> Private Balcony</span>
+        <span><i class="fa-solid fa-wifi"></i> Free Wi-Fi</span>
+        <span><i class="fa-solid fa-mug-hot"></i> Breakfast</span>
+      </div>
+
+      <a href="/bookings/" class="btn-book-room">Book This Room</a>
+    </div>
+  </div>
+
+</section>
+
+<!-- STYLES -->
+<style>
+.room-card{
+  background:#fff;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 20px 40px rgba(0,0,0,.08);
+  display:flex;
+  flex-direction:column;
+}
+
+.room-card img{
+  width:100%;
+  height:240px;
+  object-fit:cover;
+}
+
+.room-content{
+  padding:26px;
+}
+
+.room-content h3{
+  font-family:'Playfair Display',serif;
+  font-size:22px;
+  margin-bottom:6px;
+}
+
+.price{
+  color:#c9a24d;
+  font-weight:600;
+  margin-bottom:14px;
+}
+
+.amenities{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  font-size:14px;
+  margin-bottom:20px;
+}
+
+.amenities i{
+  color:#c9a24d;
+  margin-right:6px;
+}
+
+.btn-book-room{
+  display:inline-block;
+  text-align:center;
+  background:#c9a24d;
+  color:#000;
+  padding:12px;
+  border-radius:8px;
+  font-weight:600;
+}
+
+/* 📱 MOBILE STACK */
+@media (max-width: 900px){
+  .rooms-grid{
+    grid-template-columns:1fr;
+    margin-top:60px;
+  }
+}
+</style>
+
+{% endblock %}
