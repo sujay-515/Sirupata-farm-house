@@ -10,7 +10,7 @@
   padding:22px 26px;
   box-shadow:0 25px 80px rgba(0,0,0,.12);
   display:grid;
-  grid-template-columns:repeat(6,1fr) auto;
+  grid-template-columns:repeat(7,1fr) auto;
   gap:16px;
   align-items:end;
 }
@@ -47,6 +47,11 @@
 
 <form method="POST" class="booking-bar">
   {% csrf_token %}
+
+  <div>
+    <label>Name</label>
+    <input type="text" name="name" required>
+  </div>
 
   <div>
     <label>Check-in</label>

@@ -97,6 +97,24 @@
 
 </section>
 
+<!-- BUSY PERIODS SECTION -->
+<section style="margin-top:100px;text-align:center;max-width:800px;margin-left:auto;margin-right:auto;">
+  <h2 style="font-family:'Playfair Display',serif;font-size:36px;color:#0f2e23;">
+    Peak Seasons & Busy Periods
+  </h2>
+  <p>Based on booking trends, here are the most popular months to visit:</p>
+  <div style="display:flex;justify-content:center;gap:20px;margin-top:30px;flex-wrap:wrap;">
+    {% for period in busy_periods %}
+    <div style="background:#c9a24d;color:#000;padding:20px;border-radius:12px;min-width:120px;">
+      <h4 style="margin:0;font-size:24px;">{{ period.month|date:"F" }}</h4>
+      <p style="margin:5px 0 0;">{{ period.count }} bookings</p>
+    </div>
+    {% empty %}
+    <p>No booking data available yet.</p>
+    {% endfor %}
+  </div>
+</section>
+
 
 
 
@@ -229,7 +247,7 @@
 
 <!-- YOUR EXISTING HOMEPAGE CONTENT HERE (hero section, about, etc.) -->
 
-<<section class="reviews-section py-5">
+<section class="reviews-section py-5" id="reviews">
     <div class="container">
         <!-- Section Title with Story Icon -->
         <div class="text-center mb-5">
@@ -240,47 +258,103 @@
             <p class="lead text-muted">Real experiences from our wonderful guests</p>
         </div>
 
-        <!-- Reviews Grid - 5 Stars All Around -->
-        <div class="row g-4">
-            {% for review in reviews %}
-            <div class="col-lg-4 col-md-6">
-                <div class="review-card">
-                    <!-- 5 Stars at top -->
-                    <div class="stars-container mb-3">
-                        <i class="fas fa-star text-warning"></i>
-                        <i class="fas fa-star text-warning"></i>
-                        <i class="fas fa-star text-warning"></i>
-                        <i class="fas fa-star text-warning"></i>
-                        <i class="fas fa-star text-warning"></i>
-                        <span class="ms-2 text-muted">5/5</span>
-                    </div>
-                    
-                    <!-- Review Title -->
-                    <h5 class="review-title fw-bold mb-3">
-                        "{{ review.review_title }}"
-                    </h5>
-                    
-                    <!-- Review Text -->
-                    <p class="review-text text-muted mb-4">
-                        {{ review.review_text }}
-                    </p>
-                    
-                    <!-- Reviewer Info with Icon -->
-                    <div class="reviewer-info d-flex align-items-center">
-                        <div class="reviewer-avatar me-3">
-                            <i class="fas fa-user-circle fa-2x text-primary"></i>
-                        </div>
-                        <div>
-                            <h6 class="fw-bold mb-0">{{ review.user_name }}</h6>
-                            <small class="text-muted">
-                                <i class="far fa-calendar-alt me-1"></i>
-                                {{ review.created_at|date:"F d, Y" }}
-                            </small>
-                        </div>
-                    </div>
-                </div>
+        <!-- Reviews Sort Controls -->
+        <div class="d-flex justify-content-end align-items-end gap-3 mb-3">
+            <div>
+                <label class="form-label mb-1" style="font-weight:600;">Sort:</label>
             </div>
-            {% endfor %}
+            <div>
+                <label for="dateSort" class="form-label mb-1">Date</label>
+                <select id="dateSort" class="form-select form-select-sm" style="width:auto">
+                    <option value="newest" {% if date_sort == 'newest' %}selected{% endif %}>Newer</option>
+                    <option value="oldest" {% if date_sort == 'oldest' %}selected{% endif %}>Older</option>
+                </select>
+            </div>
+            <div>
+                <label for="overallSort" class="form-label mb-1">Overall experience</label>
+                <select id="overallSort" class="form-select form-select-sm" style="width:auto">
+                    <option value="best" {% if overall_sort == 'best' %}selected{% endif %}>Better</option>
+                    <option value="worst" {% if overall_sort == 'worst' %}selected{% endif %}>Worse</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loading-spinner" class="text-center d-none mb-3">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                function updateReviews() {
+                    var dateSelect = document.getElementById('dateSort');
+                    var overallSelect = document.getElementById('overallSort');
+                    var dateVal = dateSelect ? dateSelect.value : 'newest';
+                    var overallVal = overallSelect ? overallSelect.value : 'best';
+                    var newUrl = new URL(window.location.href);
+                    newUrl.searchParams.set('date_sort', dateVal);
+                    newUrl.searchParams.set('overall_sort', overallVal);
+                    newUrl.searchParams.set('ajax', '1');
+
+                    // Show loading spinner
+                    document.getElementById('loading-spinner').classList.remove('d-none');
+
+                    fetch(newUrl.toString(), {
+                        headers: {'X-Requested-With': 'XMLHttpRequest'}
+                    })
+                    .then(function(response) {
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        return response.text();
+                    })
+                    .then(function(html) {
+                        document.getElementById('reviews-list-container').innerHTML = html;
+                        var cleanUrl = new URL(newUrl.toString());
+                        cleanUrl.searchParams.delete('ajax');
+                        var finalUrl = cleanUrl.toString();
+                        if (finalUrl.indexOf('#reviews') === -1) {
+                            finalUrl += '#reviews';
+                        }
+                        history.replaceState({}, '', finalUrl);
+                        // Hide loading spinner
+                        document.getElementById('loading-spinner').classList.add('d-none');
+                    })
+                    .catch(function(error) {
+                        console.error('Error fetching sorted reviews:', error);
+                        var fallbackUrl = new URL(window.location.href);
+                        fallbackUrl.searchParams.set('date_sort', dateVal);
+                        fallbackUrl.searchParams.set('overall_sort', overallVal);
+                        window.location.href = fallbackUrl.toString() + '#reviews';
+                        // Hide loading spinner on error
+                        document.getElementById('loading-spinner').classList.add('d-none');
+                    });
+                }
+
+                var dateSelect = document.getElementById('dateSort');
+                var overallSelect = document.getElementById('overallSort');
+                if (dateSelect) dateSelect.addEventListener('change', updateReviews);
+                if (overallSelect) overallSelect.addEventListener('change', updateReviews);
+            });
+
+            function toggleReview(reviewId) {
+                const textElement = document.getElementById('review-text-' + reviewId);
+                const btnElement = document.getElementById('read-more-btn-' + reviewId);
+                if (textElement.style.display === '-webkit-box') {
+                    textElement.style.display = 'block';
+                    textElement.style['-webkit-line-clamp'] = 'none';
+                    btnElement.textContent = 'Read Less';
+                } else {
+                    textElement.style.display = '-webkit-box';
+                    textElement.style['-webkit-line-clamp'] = '3';
+                    btnElement.textContent = 'Read More';
+                }
+            }
+        </script>
+
+        <!-- Reviews Grid - 5 Stars All Around -->
+        <div id="reviews-list-container">
+            {% include "core/reviews_grid.html" %}
         </div>
 
         <!-- Write Your Review Button with Story Icon -->
@@ -397,7 +471,7 @@
     padding: 25px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     transition: all 0.3s ease;
-    height: 100%;
+    min-height: 350px;
     border: 1px solid rgba(102,126,234,0.1);
     position: relative;
     overflow: hidden;
@@ -506,6 +580,36 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
- 
+<!-- Mobile Responsiveness -->
+<style>
+@media (max-width: 768px) {
+    /* Welcome section grid */
+    section[style*="grid-template-columns:1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    
+    /* Icon features grid */
+    section[style*="grid-template-columns:repeat(2,1fr)"] {
+        grid-template-columns: 1fr !important;
+        gap: 40px !important;
+    }
+    
+    /* Facility slider height */
+    .facility-slider {
+        height: 300px !important;
+    }
+    
+    /* Reviews sort controls */
+    .d-flex.justify-content-end {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+    
+    .d-flex.justify-content-end > div {
+        margin-bottom: 10px;
+    }
+}
+</style>
 
 {% endblock %}

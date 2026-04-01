@@ -5,8 +5,9 @@ from .models import Booking
 def booking_form(request):
     if request.method == "POST":
         booking = Booking(
-            checkin=request.POST.get("checkin"),
-            checkout=request.POST.get("checkout"),
+            name=request.POST.get("name"),
+            check_in=request.POST.get("checkin"),
+            check_out=request.POST.get("checkout"),
             guests=request.POST.get("guests"),
             room=request.POST.get("room"),
             phone=request.POST.get("phone"),
@@ -16,13 +17,13 @@ def booking_form(request):
         try:
             booking.full_clean()
             booking.save()
-            return render(request, "bookings/booking_form.html", {
+            return render(request, "core/booking_form.html", {
                 "success": True
             })
 
         except ValidationError as e:
-            return render(request, "bookings/booking_form.html", {
-                "errors": e.messages
+            return render(request, "core/booking_form.html", {
+                "error": "; ".join(e.messages)
             })
 
-    return render(request, "bookings/booking_form.html")
+    return render(request, "core/booking_form.html")

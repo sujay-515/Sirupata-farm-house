@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.views.generic import TemplateView
 from django.contrib import messages
 from django.db.models import Avg, Count
+from django.db.models.functions import ExtractMonth
 from django.core.mail import send_mail
 from django.conf import settings
 
@@ -17,19 +18,35 @@ def home(request):
     # Get video
     video = HomeWelcomeVideo.objects.filter(is_active=True).order_by("-uploaded_at").first()
     
-    # Get all approved reviews (including fake ones)
-    reviews = Review.objects.filter(status='approved').order_by('-created_at')[:6]  # Show 6 reviews
-    
+    # Pick independent sort modes from query string
+    date_sort = request.GET.get('date_sort', 'newest')      # newest or oldest
+    experience_sort = request.GET.get('overall_sort', 'best')  # best or worst
+
+    # Build review queryset, apply sort by experience then date secondarily
+    qs = Review.objects.filter(status='approved')
+    if experience_sort == 'best':
+        if date_sort == 'oldest':
+            reviews = qs.order_by('-sentiment_score', 'created_at')[:6]
+        else:
+            reviews = qs.order_by('-sentiment_score', '-created_at')[:6]
+    else:
+        if date_sort == 'oldest':
+            reviews = qs.order_by('sentiment_score', 'created_at')[:6]
+        else:
+            reviews = qs.order_by('sentiment_score', '-created_at')[:6]
+
+    # Find analytical top/bottom reviews for highlight
     # If no reviews in database, create fake ones for display
     if not reviews:
         reviews = [
-     
             {
                 'user_name': 'Gita Gurung',
                 'rating': 5,
                 'review_title': 'Wonderful Stay',
                 'review_text': 'The rooms were spacious and clean. Great value for money. Highly recommended!',
                 'created_at': '2024-03-12',
+                'sentiment': 'Loved it! 😊',
+                'stars': range(5),
             },
             {
                 'user_name': 'Bikram Thapa',
@@ -37,6 +54,8 @@ def home(request):
                 'review_title': 'Best in Town',
                 'review_text': 'Exceptional service and beautiful views. The restaurant serves delicious food.',
                 'created_at': '2024-03-11',
+                'sentiment': 'Loved it! 😊',
+                'stars': range(5),
             },
             {
                 'user_name': 'Sunita Rai',
@@ -44,15 +63,31 @@ def home(request):
                 'review_title': 'Perfect Getaway',
                 'review_text': 'A perfect place to relax and unwind. The staff was very attentive and courteous.',
                 'created_at': '2024-03-10',
+                'sentiment': 'Loved it! 😊',
+                'stars': range(5),
             },
         ]
+    else:
+        # For real reviews, add stars
+        reviews = list(reviews)  # evaluate queryset
+        for r in reviews:
+            r.stars = range(r.rating)
     
     context = {
         "video": video,
         "reviews": reviews,
         "review_form": ReviewForm(),
+        "date_sort": date_sort,
+        "overall_sort": experience_sort,
     }
-    
+
+    # Demand forecasting: top busy months based on bookings
+    busy_periods = Booking.objects.annotate(month=ExtractMonth('created_at')).values('month').annotate(count=Count('id')).order_by('-count')[:3]
+    context['busy_periods'] = busy_periods
+
+    if request.GET.get('ajax') == '1':
+        return render(request, "core/reviews_grid.html", context)
+
     return render(request, "core/home.html", context)
 
 def submit_review(request):
@@ -136,6 +171,7 @@ def booking_form(request):
         try:
             # Create booking object (NOT saved yet)
             booking = Booking(
+                name=request.POST.get("name"),
                 checkin=request.POST.get("checkin"),
                 checkout=request.POST.get("checkout"),
                 guests=request.POST.get("guests"),

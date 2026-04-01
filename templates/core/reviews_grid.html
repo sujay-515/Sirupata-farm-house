@@ -1,0 +1,35 @@
+<div id="reviews-list" class="row g-4">
+    {% for review in reviews %}
+    <div class="col-lg-4 col-md-6">
+        <div class="review-card">
+            <div class="stars-container mb-3">
+                {% for _ in review.stars %}
+                <i class="fas fa-star text-warning"></i>
+                {% endfor %}
+                <span class="ms-2 text-muted">{{ review.rating }}/5</span>
+            </div>
+            <h5 class="review-title fw-bold mb-3">
+                "{{ review.review_title }}"
+            </h5>
+            <p class="review-text text-muted mb-4" id="review-text-{{ review.id }}" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+                {{ review.review_text }}
+            </p>
+            {% if review.review_text|length > 150 %}
+            <button class="btn btn-link p-0 text-primary" id="read-more-btn-{{ review.id }}" onclick="toggleReview({{ review.id }})">Read More</button>
+            {% endif %}
+            <small class="text-info mb-3 d-block" style="font-weight:600;">
+                Overall experience: {{ review.sentiment|default:review.get_sentiment_label }}
+            </small>
+            <div class="reviewer-info d-flex align-items-center" style="gap: 0.4rem;">
+                <div class="reviewer-avatar" style="line-height: 1; margin-right: 0.4rem;">
+                    <i class="fas fa-user-circle fa-2x text-primary"></i>
+                </div>
+                <div>
+                    <h6 class="fw-bold mb-0">{{ review.user_name }}</h6>
+                    <small class="text-muted"><i class="far fa-calendar-alt me-1"></i>{{ review.created_at|date:"F d, Y" }}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
