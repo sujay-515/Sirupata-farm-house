@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from core.models import Review
-from textblob import TextBlob
+
+from ml_engine.services.sentiment import compute_review_sentiment
 
 class Command(BaseCommand):
     help = 'Compute sentiment scores for all reviews'
@@ -9,10 +10,7 @@ class Command(BaseCommand):
         reviews = Review.objects.all()
         for review in reviews:
             if review.review_text:
-                blob = TextBlob(review.review_text)
-                text_sentiment = blob.sentiment.polarity
-                rating_normalized = (review.rating - 3) / 2
-                review.sentiment_score = (text_sentiment + rating_normalized) / 2
+                review.sentiment_score = compute_review_sentiment(review.review_text, review.rating)
                 review.save(update_fields=['sentiment_score'])
                 self.stdout.write(f'Updated {review.user_name}: {review.sentiment_score}')
         self.stdout.write('Sentiment computation completed.')

@@ -1,185 +1,492 @@
 {% extends "core/base.html" %}
 {% load static %}
 
+{% block title %}About Us | Sirupata R-Star{% endblock %}
+
 {% block content %}
-
 <style>
-/* ---------- GLOBAL ---------- */
-.about-section {
-    padding: 80px 8%;
-    background: #faf9f6;
+.about-shell {
+    background:
+        radial-gradient(circle at top left, rgba(201, 162, 77, 0.08), transparent 28%),
+        linear-gradient(180deg, #f7f7f3 0%, #eef2ec 100%);
 }
 
-.about-block {
-    display: flex;
-    align-items: center;
-    gap: 60px;
-    margin-bottom: 100px;
-}
-
-.about-block.reverse {
-    flex-direction: row-reverse;
-}
-
-.about-text {
-    flex: 1;
-}
-
-.about-text h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
-    color: #1b3a2b;
-}
-
-.about-text p {
-    font-size: 17px;
-    line-height: 1.8;
-    color: #444;
-}
-
-.about-image {
-    flex: 1;
-}
-
-.about-image img {
-    width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-}
-
-/* ---------- NEARBY LOCATIONS ---------- */
-.nearby {
-    background: #f6f4ef;
-    padding: 80px 8%;
-    text-align: center;
-}
-
-.nearby h2 {
-    font-size: 36px;
-    margin-bottom: 50px;
-    color: #1b3a2b;
-}
-
-.nearby-grid {
+.about-hero {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 72px 24px 48px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 30px;
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.95fr);
+    gap: 32px;
+    align-items: center;
 }
 
-.nearby-card {
-    border: 1px solid #ccc;
-    padding: 30px 20px;
+.about-kicker {
+    display: inline-block;
+    margin-bottom: 14px;
+    color: #b79242;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+}
+
+.about-hero h1 {
+    margin: 0 0 18px;
+    color: #0f2e23;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.6rem, 5vw, 4.5rem);
+    line-height: 0.98;
+}
+
+.about-hero p {
+    margin: 0 0 24px;
+    max-width: 60ch;
+    color: #55635c;
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.about-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.about-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 20px;
+    border-radius: 999px;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.about-btn:hover {
+    transform: translateY(-2px);
+}
+
+.about-btn-primary {
+    background: #0f2e23;
+    color: #fff;
+    box-shadow: 0 16px 30px rgba(15, 46, 35, 0.16);
+}
+
+.about-btn-secondary {
     background: #fff;
-    transition: all 0.3s ease;
+    color: #0f2e23;
+    border: 1px solid rgba(15, 46, 35, 0.12);
 }
 
-.nearby-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+.about-hero-visual {
+    position: relative;
+    min-height: 520px;
 }
 
-.nearby-card h4 {
-    color: #b9974d;
-    margin-bottom: 15px;
+.about-photo-main,
+.about-photo-accent {
+    position: absolute;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 28px 55px rgba(15, 46, 35, 0.18);
 }
 
-.nearby-card p {
-    font-size: 15px;
-    color: #555;
+.about-photo-main {
+    inset: 0 44px 68px 0;
 }
 
-/* ---------- RESPONSIVE ---------- */
-@media (max-width: 900px) {
-    .about-block,
-    .about-block.reverse {
+.about-photo-accent {
+    right: 0;
+    bottom: 0;
+    width: 46%;
+    height: 42%;
+    border: 8px solid rgba(247, 247, 243, 0.92);
+}
+
+.about-photo-main img,
+.about-photo-accent img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.about-floating-card {
+    position: absolute;
+    left: 18px;
+    bottom: 24px;
+    max-width: 260px;
+    padding: 18px 18px 16px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 16px 34px rgba(15, 46, 35, 0.14);
+}
+
+.about-floating-card strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #0f2e23;
+    font-size: 1rem;
+}
+
+.about-floating-card span {
+    color: #5d6c64;
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+.about-stats {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px 24px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.about-stat {
+    padding: 22px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(15, 46, 35, 0.08);
+    box-shadow: 0 12px 28px rgba(15, 46, 35, 0.08);
+}
+
+.about-stat-value {
+    display: block;
+    margin-bottom: 10px;
+    color: #0f2e23;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.about-stat-label {
+    color: #69776f;
+    font-size: 0.94rem;
+    line-height: 1.6;
+}
+
+.about-section {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 54px 24px;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
+    gap: 28px;
+}
+
+.about-card,
+.about-story-card {
+    padding: 30px;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(15, 46, 35, 0.08);
+    box-shadow: 0 16px 34px rgba(15, 46, 35, 0.08);
+}
+
+.about-card h2,
+.about-story-card h2,
+.about-locations h2 {
+    margin: 0 0 14px;
+    color: #0f2e23;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3vw, 2.7rem);
+}
+
+.about-card p,
+.about-story-card p,
+.about-locations-intro {
+    margin: 0;
+    color: #56645d;
+    line-height: 1.85;
+}
+
+.about-story-list {
+    display: grid;
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.about-story-item {
+    padding-top: 18px;
+    border-top: 1px solid rgba(15, 46, 35, 0.1);
+}
+
+.about-story-item:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.about-story-item strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #0f2e23;
+}
+
+.about-story-item span {
+    color: #647169;
+    line-height: 1.7;
+}
+
+.about-locations {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px 24px 90px;
+}
+
+.about-locations-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: end;
+    margin-bottom: 28px;
+}
+
+.about-locations-copy {
+    max-width: 60ch;
+}
+
+.about-locations-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.about-location-card {
+    padding: 24px;
+    border-radius: 24px;
+    background: #fff;
+    border: 1px solid rgba(15, 46, 35, 0.08);
+    box-shadow: 0 14px 30px rgba(15, 46, 35, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.about-location-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 34px rgba(15, 46, 35, 0.12);
+}
+
+.about-location-icon {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 16px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(201, 162, 77, 0.16);
+    color: #b79242;
+    font-size: 1rem;
+}
+
+.about-location-card h3 {
+    margin: 0 0 10px;
+    color: #0f2e23;
+    font-size: 1.15rem;
+}
+
+.about-location-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.about-location-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: #eef2ec;
+    color: #44564d;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.about-location-card p {
+    margin: 0;
+    color: #647169;
+    line-height: 1.7;
+}
+
+@media (max-width: 1080px) {
+    .about-hero,
+    .about-grid,
+    .about-locations-grid,
+    .about-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .about-hero {
+        align-items: start;
+    }
+}
+
+@media (max-width: 860px) {
+    .about-hero,
+    .about-grid,
+    .about-stats,
+    .about-locations-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-hero {
+        padding-top: 48px;
+    }
+
+    .about-hero-visual {
+        min-height: 420px;
+    }
+
+    .about-photo-main {
+        inset: 0 28px 62px 0;
+    }
+
+    .about-photo-accent {
+        width: 50%;
+        height: 40%;
+    }
+
+    .about-locations-head {
         flex-direction: column;
-        text-align: center;
+        align-items: start;
+    }
+}
+
+@media (max-width: 560px) {
+    .about-hero,
+    .about-section,
+    .about-locations {
+        padding-left: 18px;
+        padding-right: 18px;
     }
 
-    .about-text h2 {
-        font-size: 28px;
+    .about-photo-main {
+        inset: 0 14px 56px 0;
     }
 
-    .nearby h2 {
-        font-size: 28px;
+    .about-photo-accent {
+        width: 56%;
+    }
+
+    .about-floating-card {
+        left: 10px;
+        right: 10px;
+        max-width: none;
     }
 }
 </style>
 
-<!-- ================= ABOUT SECTION ================= -->
-<section class="about-section">
-
-    <!-- Sirupata Farm House -->
-    <div class="about-block">
-        <div class="about-image">
-            <img src="{% static "core/hero/farmhouse.jpg" %}" alt="Sirupata Farm House">
-        </div>
-        <div class="about-text">
-            <h2>Sirupata Farm House</h2>
+<div class="about-shell">
+    <section class="about-hero">
+        <div>
+            <span class="about-kicker">ABOUT SIRUPATA R-STAR</span>
+            <h1>About Us</h1>
             <p>
-                Sirupata Farm House is a peaceful eco-retreat designed to reconnect guests with nature.
-                Surrounded by lush greenery, organic farms, and scenic hill views, it offers a calm and
-                refreshing escape from city life. Guests enjoy farm-to-table experiences, fresh air,
-                and authentic rural hospitality.
+                {{ site_content.about_hero_body|default:"Set around Butwal with easy access to Lumbini, Palpa routes, the airport, and the border corridor, Sirupata is designed for guests who want more than a standard overnight stop. It brings together the calm of a farm-led setting and the ease of a comfortable hotel stay, so the experience can feel both practical and restorative." }}
             </p>
-        </div>
-    </div>
-
-    <!-- R-Star Hotel -->
-    <div class="about-block reverse">
-        <div class="about-image">
-            <img src="{% static 'images/rstar_hotel.jpg' %}" alt="R-Star Hotel">
-        </div>
-        <div class="about-text">
-            <h2>Sirupata R-Star Hotel</h2>
-            <p>
-                Sirupata R-Star Hotel blends modern luxury with warm hospitality.
-                Featuring premium rooms, fine dining, and elegant interiors, the hotel
-                is ideal for business travelers, families, and tourists seeking comfort,
-                convenience, and memorable stays in Butwal.
-            </p>
-        </div>
-    </div>
-
-</section>
-
-<!-- ================= NEARBY LOCATIONS ================= -->
-<section class="nearby">
-    <h2>Nearby Locations</h2>
-
-    <div class="nearby-grid">
-
-        <div class="nearby-card">
-            <h4>Butwal Chauraha</h4>
-            <p>Distance: 3.5 km<br>Time: 6 min</p>
+            <div class="about-hero-actions">
+                <a href="/bookings/" class="about-btn about-btn-primary">Plan Your Stay</a>
+                <a href="/rooms/" class="about-btn about-btn-secondary">Explore Rooms</a>
+            </div>
         </div>
 
-        <div class="nearby-card">
-            <h4>Rampur Palpa</h4>
-            <p>Distance: 44 km<br>Time: 1 hr 55 min</p>
+        <div class="about-hero-visual">
+            <div class="about-photo-main">
+                <img src="{% static 'core/hero/farmhouse.jpg' %}" alt="Sirupata Farmhouse surrounded by nature">
+            </div>
+            <div class="about-photo-accent">
+                <img src="{% static 'core/sections/hill1.jpg' %}" alt="Scenic stay experience at Sirupata">
+            </div>
+            <div class="about-floating-card">
+                <strong>{{ site_content.about_highlight_title|default:"Farm calm, hotel comfort" }}</strong>
+                <span>{{ site_content.about_highlight_body|default:"Fresh surroundings, warm hospitality, and a stay style that feels both restful and welcoming." }}</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-stats">
+        <article class="about-stat">
+            <span class="about-stat-value">2</span>
+            <span class="about-stat-label">Distinct stay experiences: eco farmhouse calm and city-connected hotel comfort.</span>
+        </article>
+        <article class="about-stat">
+            <span class="about-stat-value">Fresh</span>
+            <span class="about-stat-label">Farm-inspired dining and a setting shaped by greenery, open air, and local warmth.</span>
+        </article>
+        <article class="about-stat">
+            <span class="about-stat-value">Easy</span>
+            <span class="about-stat-label">Convenient access for Butwal visitors, short escapes, celebrations, and family trips.</span>
+        </article>
+        <article class="about-stat">
+            <span class="about-stat-value">Warm</span>
+            <span class="about-stat-label">A hospitality style focused on comfort, calm pacing, and memorable stays.</span>
+        </article>
+    </section>
+
+    <section class="about-section">
+        <div class="about-grid">
+            <article class="about-card">
+                <h2>{{ site_content.about_story_title|default:"Our Story" }}</h2>
+                <p>
+                    {{ site_content.about_story_body|default:"Sirupata grew from a simple but useful idea for this area: many guests are traveling for mixed reasons. Some are passing through Butwal. Some are visiting family. Some want a quieter base before heading toward Lumbini, Palpa, or nearby routes. Others simply want a greener, slower setting for a short escape. The property is shaped to support all of those rhythms without feeling cold, hurried, or overly formal." }}
+                </p>
+            </article>
+
+            <article class="about-story-card">
+                <h2>{{ site_content.about_expectation_title|default:"What to Expect" }}</h2>
+                <div class="about-story-list">
+                    <div class="about-story-item">
+                        <strong>{{ site_content.about_expectation_1_title|default:"Quiet with character" }}</strong>
+                        <span>{{ site_content.about_expectation_1_body|default:"A stay environment that feels open, peaceful, and personal instead of anonymous or strictly businesslike." }}</span>
+                    </div>
+                    <div class="about-story-item">
+                        <strong>{{ site_content.about_expectation_2_title|default:"Comfort that still feels local" }}</strong>
+                        <span>{{ site_content.about_expectation_2_body|default:"Modern essentials paired with greenery, local warmth, and a stronger sense of place than a typical city hotel." }}</span>
+                    </div>
+                    <div class="about-story-item">
+                        <strong>{{ site_content.about_expectation_3_title|default:"Flexible for real travel needs" }}</strong>
+                        <span>{{ site_content.about_expectation_3_body|default:"Useful for stopovers, family visits, small gatherings, scenic stays, and food-led weekends without changing its core identity." }}</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="about-locations">
+        <div class="about-locations-head">
+            <div class="about-locations-copy">
+                <span class="about-kicker">NEARBY CONNECTIONS</span>
+                <h2>{{ site_content.about_locations_title|default:"Around Sirupata" }}</h2>
+                <p class="about-locations-intro">
+                    {{ site_content.about_locations_intro|default:"Sirupata is close enough to key routes and destinations to stay convenient, while still feeling separate from the pace and noise of the everyday city." }}
+                </p>
+            </div>
         </div>
 
-        <div class="nearby-card">
-            <h4>Tansen Palpa</h4>
-            <p>Distance: 44 km<br>Time: 1 hr 55 min</p>
+        <div class="about-locations-grid">
+            {% for location in about_locations %}
+            <article class="about-location-card">
+                <span class="about-location-icon"><i class="fa-solid fa-{{ location.icon }}"></i></span>
+                <h3>{{ location.title }}</h3>
+                <div class="about-location-meta">
+                    {% if location.distance %}<span class="about-location-pill">{{ location.distance }}</span>{% endif %}
+                    {% if location.travel_time %}<span class="about-location-pill">{{ location.travel_time }}</span>{% endif %}
+                </div>
+                <p>{{ location.description }}</p>
+            </article>
+            {% empty %}
+            <article class="about-location-card">
+                <span class="about-location-icon"><i class="fa-solid fa-location-dot"></i></span>
+                <h3>Location details coming soon</h3>
+                <p>Add active About Location entries from the admin panel to show nearby travel highlights here.</p>
+            </article>
+            {% endfor %}
         </div>
-
-        <div class="nearby-card">
-            <h4>Lumbini</h4>
-            <p>Distance: 38 km<br>Time: 55 min</p>
-        </div>
-
-        <div class="nearby-card">
-            <h4>Sunouli Border</h4>
-            <p>Distance: 22 km<br>Time: 34 min</p>
-        </div>
-
-        <div class="nearby-card">
-            <h4>Gautam Buddha Airport</h4>
-            <p>Distance: 12 km<br>Time: 29 min</p>
-        </div>
-
-    </div>
-</section>
-
+    </section>
+</div>
 {% endblock %}

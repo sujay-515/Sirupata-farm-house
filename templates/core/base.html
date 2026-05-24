@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     :root{
-      --header-height: 86px;
+      --header-height: 80px;
       --dark: #0f2e23;
       --gold: #c9a24d;
       --gold-light: #e6c77a;
@@ -51,9 +51,11 @@
     }
 
     header.scrolled{
-      background:rgba(15,46,35,.98);
-      box-shadow:0 6px 30px rgba(0,0,0,.3);
-      border-bottom:2px solid var(--gold);
+      background:rgba(15,46,35,.92);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      box-shadow:0 10px 28px rgba(8,18,14,.18);
+      border-bottom:1px solid rgba(201,162,77,.32);
     }
 
     .nav-wrap{
@@ -61,7 +63,7 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
-      padding:0 30px;
+      padding:0 28px;
       gap:20px;
     }
 
@@ -76,7 +78,7 @@
 
     .logo .title{
       font-family:'Playfair Display',serif;
-      font-size:20px;
+      font-size:19px;
       font-weight:600;
       line-height:1;
     }
@@ -97,7 +99,7 @@
 
     nav.main-nav a{
       color:#fff;
-      font-size:14px;
+      font-size:13.5px;
       display:flex;
       align-items:center;
       gap:6px;
@@ -108,8 +110,8 @@
     .btn-book{
       background:var(--gold);
       color:#000;
-      padding:9px 16px;
-      border-radius:6px;
+      padding:8px 15px;
+      border-radius:999px;
       font-weight:600;
     }
 
@@ -332,7 +334,7 @@
        ========================= */
 
     @media (max-width: 900px){
-      :root{ --header-height:72px; }
+      :root{ --header-height:68px; }
 
       body{ padding-top:var(--header-height); }
 
@@ -482,7 +484,7 @@
     Follow us on social media and stay connected with Sirupata R-Star.
   </p>
 
-  <div style="display:flex;gap:18px;align-items:center;">
+  <div style="display:flex;gap:18px;align-items:center;justify-content:center;width:100%;">
 
     <!-- Facebook -->
     <a href="https://facebook.com/" target="_blank"
@@ -525,9 +527,18 @@
 
 <script>
   const header = document.querySelector("header");
-  window.addEventListener("scroll",()=>{
-    header.classList.toggle("scrolled",window.scrollY>20);
-  });
+  const heroSlot = document.querySelector(".hero-slot");
+  const hasHero = !!(heroSlot && heroSlot.innerHTML.trim().length);
+
+  function updateHeaderState() {
+    if (!header) {
+      return;
+    }
+    header.classList.toggle("scrolled", !hasHero || window.scrollY > 20);
+  }
+
+  updateHeaderState();
+  window.addEventListener("scroll", updateHeaderState);
 
   const slides=document.querySelectorAll(".slide");
   if(slides.length>1){

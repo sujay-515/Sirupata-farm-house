@@ -5,155 +5,349 @@
 
 {% block content %}
 <style>
-.contact-wrapper{
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:60px;
-  background:#f8f6f2;
-  padding:80px;
-  border-radius:12px;
+.contact-shell {
+  background:
+    radial-gradient(circle at top left, rgba(201, 162, 77, 0.08), transparent 24%),
+    linear-gradient(180deg, #f8f8f4 0%, #edf2ec 100%);
 }
 
-.contact-info h2{
-  font-family:'Playfair Display',serif;
-  font-size:36px;
-  margin-bottom:20px;
+.contact-hero {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 72px 24px 28px;
+  text-align: center;
 }
 
-.contact-info p{
-  font-size:15px;
-  line-height:1.8;
-  margin-bottom:30px;
+.contact-hero h1 {
+  margin: 0 0 14px;
+  color: #0f2e23;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.6rem, 5vw, 4.4rem);
+  line-height: 1;
 }
 
-.contact-info .item{
-  display:flex;
-  gap:14px;
-  align-items:flex-start;
-  margin-bottom:22px;
+.contact-hero p {
+  max-width: 46ch;
+  margin: 0 auto;
+  color: #5d6c64;
+  line-height: 1.75;
 }
 
-.contact-info i{
-  font-size:20px;
-  color:#c9a24d;
-  margin-top:4px;
+.contact-main {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 8px 24px 34px;
+  display: grid;
+  grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.1fr);
+  gap: 28px;
+  align-items: start;
 }
 
-.contact-form{
-  background:#3f3f3f;
-  padding:50px;
-  border-radius:10px;
+.contact-card,
+.contact-form-card,
+.contact-map-card {
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 46, 35, 0.08);
+  box-shadow: 0 18px 38px rgba(15, 46, 35, 0.08);
 }
 
-.contact-form h3{
-  color:#fff;
-  margin-bottom:30px;
-  font-family:'Playfair Display',serif;
-  font-size:28px;
+.contact-card {
+  padding: 30px;
 }
 
-.contact-form input,
-.contact-form textarea{
-  width:100%;
-  padding:14px;
-  margin-bottom:18px;
-  border:none;
-  outline:none;
-  background:#555;
-  color:#fff;
-  font-size:14px;
+.contact-card h2,
+.contact-form-card h2,
+.contact-map-card h2 {
+  margin: 0 0 14px;
+  color: #0f2e23;
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
 }
 
-.contact-form textarea{
-  height:120px;
-  resize:none;
+.contact-card > p,
+.contact-form-intro,
+.contact-map-card p {
+  margin: 0;
+  color: #5d6c64;
+  line-height: 1.75;
 }
 
-.contact-form button{
-  background:#c9a24d;
-  border:none;
-  padding:14px;
-  width:100%;
-  font-weight:600;
-  cursor:pointer;
+.contact-details {
+  margin-top: 24px;
+  display: grid;
+  gap: 16px;
 }
 
-.success-msg{
-  background:#d4edda;
-  padding:12px;
-  margin-bottom:20px;
-  color:#155724;
-  border-radius:6px;
+.contact-detail {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 14px;
+  align-items: start;
+  padding-top: 16px;
+  border-top: 1px solid rgba(15, 46, 35, 0.08);
+}
+
+.contact-detail:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.contact-detail i {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f6f2;
+  color: #0f2e23;
+}
+
+.contact-detail strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #0f2e23;
+}
+
+.contact-detail span {
+  color: #63726b;
+  line-height: 1.7;
+}
+
+.contact-form-card {
+  padding: 30px;
+}
+
+.contact-form-intro {
+  margin-bottom: 22px;
+}
+
+.contact-success,
+.contact-alert {
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.contact-success {
+  background: #edf7ef;
+  color: #1f5f2f;
+  border: 1px solid #cfe9d5;
+}
+
+.contact-alert {
+  background: #fff6da;
+  color: #73570b;
+  border: 1px solid #f1df9f;
+}
+
+.contact-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.contact-field {
+  display: grid;
+  gap: 8px;
+}
+
+.contact-field-full {
+  grid-column: 1 / -1;
+}
+
+.contact-field label {
+  color: #0f2e23;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.contact-form-card input,
+.contact-form-card textarea {
+  width: 100%;
+  padding: 14px 15px;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 46, 35, 0.12);
+  background: #f8faf8;
+  color: #1f2d27;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.contact-form-card textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.contact-form-card input:focus,
+.contact-form-card textarea:focus {
+  outline: none;
+  border-color: rgba(183, 146, 66, 0.9);
+  box-shadow: 0 0 0 3px rgba(201, 162, 77, 0.16);
+  background: #fff;
+}
+
+.contact-error {
+  color: #b23a3a;
+  font-size: 0.82rem;
+}
+
+.contact-submit {
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border: none;
+  border-radius: 999px;
+  background: #0f2e23;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 16px 28px rgba(15, 46, 35, 0.18);
+}
+
+.contact-map-wrap {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 0 24px 96px;
+}
+
+.contact-map-card {
+  overflow: hidden;
+}
+
+.contact-map-head {
+  padding: 28px 30px 18px;
+}
+
+.contact-map-card iframe {
+  display: block;
+  width: 100%;
+  height: 420px;
+  border: 0;
+}
+
+@media (max-width: 980px) {
+  .contact-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .contact-hero,
+  .contact-main,
+  .contact-map-wrap {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .contact-form-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 
-<div class="contact-wrapper">
+<div class="contact-shell">
+  <section class="contact-hero">
+    <h1>Contact Us</h1>
+    <p>For room bookings, dining questions, or general inquiries.</p>
+  </section>
 
-  <!-- LEFT -->
-  <div class="contact-info">
-    <h2>Hotel Sirupata R-Star</h2>
-    <p>
-      Experience premium eco farm stay hospitality with luxury rooms,
-      organic dining, and peaceful nature living.
-    </p>
+  <section class="contact-main">
+    <aside class="contact-card">
+      <h2>How to reach us</h2>
+      <p>Use the details below or send us a message directly.</p>
 
-    <div class="item">
-      <i class="fa-solid fa-phone"></i>
-      <div>
-        <strong>Call Us</strong><br>
-        +977-98XXXXXXXX
+      <div class="contact-details">
+        <div class="contact-detail">
+          <i class="fa-solid fa-phone"></i>
+          <div>
+            <strong>Call us</strong>
+            <span>+977-98XXXXXXXX</span>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <i class="fa-solid fa-envelope"></i>
+          <div>
+            <strong>Email</strong>
+            <span>info@sirupatarstar.com</span>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <i class="fa-solid fa-location-dot"></i>
+          <div>
+            <strong>Location</strong>
+            <span>Sirupata, Hilltop Area, Nepal</span>
+          </div>
+        </div>
       </div>
+    </aside>
+
+    <div class="contact-form-card">
+      <h2>Send a message</h2>
+      <p class="contact-form-intro">We’ll review your message and get back to you.</p>
+
+      {% if success %}
+        <div class="contact-success">
+          Your message has been saved successfully{% if mail_sent %} and sent to our team{% else %}. Our team can still review it from the admin panel if email delivery is delayed{% endif %}.
+        </div>
+      {% endif %}
+
+      {% if contact_form.non_field_errors %}
+        <div class="contact-alert">
+          {{ contact_form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %}
+        <div class="contact-form-grid">
+          <div class="contact-field">
+            <label for="{{ contact_form.name.id_for_label }}">Your Name</label>
+            {{ contact_form.name }}
+            {% for error in contact_form.name.errors %}<small class="contact-error">{{ error }}</small>{% endfor %}
+          </div>
+
+          <div class="contact-field">
+            <label for="{{ contact_form.email.id_for_label }}">Your Email</label>
+            {{ contact_form.email }}
+            {% for error in contact_form.email.errors %}<small class="contact-error">{{ error }}</small>{% endfor %}
+          </div>
+
+          <div class="contact-field contact-field-full">
+            <label for="{{ contact_form.subject.id_for_label }}">Subject</label>
+            {{ contact_form.subject }}
+            {% for error in contact_form.subject.errors %}<small class="contact-error">{{ error }}</small>{% endfor %}
+          </div>
+
+          <div class="contact-field contact-field-full">
+            <label for="{{ contact_form.message.id_for_label }}">Message</label>
+            {{ contact_form.message }}
+            {% for error in contact_form.message.errors %}<small class="contact-error">{{ error }}</small>{% endfor %}
+          </div>
+        </div>
+
+        <button type="submit" class="contact-submit">Send Message</button>
+      </form>
     </div>
+  </section>
 
-    <div class="item">
-      <i class="fa-solid fa-envelope"></i>
-      <div>
-        <strong>Email</strong><br>
-        info@sirupatarstar.com
+  <section class="contact-map-wrap">
+    <div class="contact-map-card">
+      <div class="contact-map-head">
+        <h2>Find us</h2>
+        <p>Sirupata, Hilltop Area, Nepal.</p>
       </div>
+      <iframe
+        src="https://www.google.com/maps?q=Sirupata%20Nepal&output=embed"
+        allowfullscreen=""
+        loading="lazy">
+      </iframe>
     </div>
-
-    <div class="item">
-      <i class="fa-solid fa-location-dot"></i>
-      <div>
-        <strong>Location</strong><br>
-        Sirupata, Hilltop Area, Nepal
-      </div>
-    </div>
-  </div>
-
-  <!-- RIGHT -->
-  <div class="contact-form">
-    <h3>Get In Touch</h3>
-
-    {% if success %}
-      <div class="success-msg">
-        Your message has been sent successfully!
-      </div>
-    {% endif %}
-
-    <form method="post">
-      {% csrf_token %}
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="email" placeholder="Your Email" required>
-      <input type="text" name="subject" placeholder="Subject" required>
-      <textarea name="message" placeholder="Write Message" required></textarea>
-      <button type="submit">SEND MESSAGE</button>
-    </form>
-  </div>
-
-</div>
-
-<!-- GOOGLE MAP -->
-<div style="margin-top:80px;">
-  <iframe
-    src="https://www.google.com/maps?q=Sirupata%20Nepal&output=embed"
-    width="100%"
-    height="420"
-    style="border:0;"
-    allowfullscreen=""
-    loading="lazy">
-  </iframe>
+  </section>
 </div>
 
 {% endblock %}

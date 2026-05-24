@@ -4,132 +4,392 @@
 {% block title %}Rooms | Sirupata R-Star{% endblock %}
 
 {% block content %}
-
-<!-- PAGE HEADER -->
-<section style="
-  background:#0f2e23;
-  color:#fff;
-  padding:80px 20px;
-  text-align:center;
-">
-  <h1 style="font-family:'Playfair Display',serif;font-size:42px;">
-    Our Rooms
-  </h1>
-  <p style="max-width:600px;margin:10px auto 0;">
-    Comfort, elegance, and nature combined for a perfect stay.
-  </p>
-</section>
-
-<!-- RECOMMENDATION BANNER -->
-{% if recommended_rooms %}
-<section style="max-width:1200px;margin:40px auto 0;padding:0 20px;">
-  <h2 style="font-family:'Playfair Display',serif;font-size:28px;margin-bottom:14px;">Recommended Rooms</h2>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
-    {% for room in recommended_rooms %}
-    <div style="background:#fff;border-radius:12px;padding:14px;box-shadow:0 8px 20px rgba(0,0,0,.08);">
-      <h5 style="margin:0 0 8px;font-weight:700;">{{ room.name }}</h5>
-      <p style="margin:0 0 6px;font-size:14px;">{{ room.price }}</p>
-      <small style="color:#6c757d;">Estimated popularity: {{ room.bookings }} bookings</small>
-    </div>
-    {% endfor %}
-  </div>
-</section>
-{% endif %}
-
-<!-- ROOMS GRID -->
-<section class="rooms-grid" style="
-  max-width:1200px;
-  margin:100px auto;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:40px;
-  padding:0 20px;
-">
-
-  {% for room in rooms %}
-  <div class="room-card">
-    <img src="{% static room.image %}">
-    <div class="room-content">
-      <h3>{{ room.name }}{% if forloop.first %} <span style="color:#c9a24d;font-size:16px;font-weight:bold;background:#f0f0f0;padding:2px 6px;border-radius:4px;">★ Popular</span>{% endif %}</h3>
-      <p class="price">{{ room.price }}</p>
-      <p style="margin-bottom:10px;font-size:14px;color:#666;">Booked {{ room.bookings }} times</p>
-
-      <div class="amenities">
-        {% for amenity in room.amenities %}
-        <span><i class="fa-solid fa-check"></i> {{ amenity }}</span>
-        {% endfor %}
-      </div>
-
-      <a href="/bookings/" class="btn-book-room">Book This Room</a>
-    </div>
-  </div>
-  {% endfor %}
-
-</section>
-
-<!-- STYLES -->
 <style>
-.room-card{
-  background:#fff;
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 20px 40px rgba(0,0,0,.08);
-  display:flex;
-  flex-direction:column;
+.rooms-shell {
+  background:
+    radial-gradient(circle at top right, rgba(201, 162, 77, 0.09), transparent 26%),
+    linear-gradient(180deg, #f7f7f3 0%, #edf2ec 100%);
 }
 
-.room-card img{
-  width:100%;
-  height:240px;
-  object-fit:cover;
+.rooms-hero {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 72px 24px 36px;
+  text-align: center;
 }
 
-.room-content{
-  padding:26px;
+.rooms-hero h1 {
+  margin: 0 0 16px;
+  color: #0f2e23;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.7rem, 5vw, 4.6rem);
+  line-height: 0.98;
 }
 
-.room-content h3{
-  font-family:'Playfair Display',serif;
-  font-size:22px;
-  margin-bottom:6px;
+.rooms-hero p {
+  margin: 0 auto 22px;
+  max-width: 52ch;
+  color: #5d6b64;
+  line-height: 1.75;
 }
 
-.price{
-  color:#c9a24d;
-  font-weight:600;
-  margin-bottom:14px;
+.rooms-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
 }
 
-.amenities{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  font-size:14px;
-  margin-bottom:20px;
+.rooms-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.amenities i{
-  color:#c9a24d;
-  margin-right:6px;
+.rooms-action:hover {
+  transform: translateY(-2px);
 }
 
-.btn-book-room{
-  display:inline-block;
-  text-align:center;
-  background:#c9a24d;
-  color:#000;
-  padding:12px;
-  border-radius:8px;
-  font-weight:600;
+.rooms-action-primary {
+  background: #0f2e23;
+  color: #fff;
+  box-shadow: 0 16px 28px rgba(15, 46, 35, 0.18);
 }
 
-/* 📱 MOBILE STACK */
-@media (max-width: 900px){
-  .rooms-grid{
-    grid-template-columns:1fr;
-    margin-top:60px;
+.rooms-action-secondary {
+  background: #fff;
+  color: #0f2e23;
+  border: 1px solid rgba(15, 46, 35, 0.12);
+}
+
+.rooms-hero-points {
+  margin: 0 auto 26px;
+  max-width: 780px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.rooms-hero-point {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(15, 46, 35, 0.08);
+  box-shadow: 0 10px 24px rgba(15, 46, 35, 0.06);
+  color: #4e5f56;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.rooms-hero-point i {
+  color: #b79242;
+}
+
+.rooms-grid-wrap {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 24px 24px 96px;
+}
+
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 26px;
+}
+
+.room-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(15, 46, 35, 0.08);
+  box-shadow: 0 20px 40px rgba(15, 46, 35, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.room-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 26px 46px rgba(15, 46, 35, 0.12);
+}
+
+.room-card-media {
+  position: relative;
+}
+
+.room-card-media img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+}
+
+.room-card-badge {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(15, 46, 35, 0.88);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.room-content {
+  display: grid;
+  gap: 16px;
+  padding: 26px;
+}
+
+.room-topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: start;
+}
+
+.room-topline h3 {
+  margin: 0 0 8px;
+  color: #0f2e23;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.7rem;
+}
+
+.room-capacity {
+  color: #6b776f;
+  font-size: 0.92rem;
+}
+
+.room-price {
+  flex-shrink: 0;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: #f4efe1;
+  color: #7d6430;
+  font-weight: 700;
+  text-align: right;
+  min-width: 110px;
+}
+
+.room-price small {
+  display: block;
+  color: #9a8150;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.room-description {
+  margin: 0;
+  color: #5d6c64;
+  line-height: 1.75;
+}
+
+.room-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.room-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: #edf2ec;
+  color: #4b5c53;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.amenities {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 12px;
+}
+
+.amenities span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #53625a;
+  font-size: 0.92rem;
+}
+
+.amenities i {
+  color: #b79242;
+}
+
+.room-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn-book-room,
+.btn-room-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.btn-book-room {
+  background: #0f2e23;
+  color: #fff;
+}
+
+.btn-room-secondary {
+  background: #f1f4ef;
+  color: #0f2e23;
+}
+
+.room-empty {
+  padding: 38px;
+  text-align: center;
+}
+
+.room-empty h3 {
+  margin: 0 0 10px;
+  color: #0f2e23;
+  font-family: 'Playfair Display', serif;
+}
+
+.room-empty p {
+  margin: 0;
+  color: #66746d;
+}
+
+@media (max-width: 980px) {
+  .rooms-hero-points {
+    max-width: 620px;
+  }
+}
+
+@media (max-width: 720px) {
+  .rooms-hero,
+  .rooms-grid-wrap {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .rooms-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .room-topline {
+    flex-direction: column;
+  }
+
+  .room-price {
+    text-align: left;
+  }
+
+  .amenities {
+    grid-template-columns: 1fr;
   }
 }
 </style>
 
+<div class="rooms-shell">
+  <section class="rooms-hero">
+    <div>
+      <h1>Our Rooms</h1>
+      <p>
+        Compare room options, pricing, and amenities.
+      </p>
+      <div class="rooms-hero-points">
+        <span class="rooms-hero-point"><i class="fa-solid fa-bed"></i> {{ rooms|length }} room{{ rooms|length|pluralize }} to explore</span>
+        {% if rooms %}
+        <span class="rooms-hero-point"><i class="fa-solid fa-tag"></i> From NPR {{ rooms.0.price|floatformat:0 }} per night</span>
+        {% endif %}
+      </div>
+      <div class="rooms-hero-actions">
+        <a class="rooms-action rooms-action-primary" href="/bookings/">Book Your Stay</a>
+        <a class="rooms-action rooms-action-secondary" href="/about/">About The Property</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="rooms-grid-wrap">
+    <div class="rooms-grid">
+      {% for room in rooms %}
+      <article class="room-card">
+        <div class="room-card-media">
+          {% if room.image_file %}
+          <img src="{{ room.image_file.url }}" alt="{{ room.name }}">
+          {% else %}
+          <img src="{% static room.image %}" alt="{{ room.name }}">
+          {% endif %}
+
+          {% if forloop.first %}
+          <span class="room-card-badge"><i class="fa-solid fa-star"></i> Guest favorite</span>
+          {% elif room.bookings > 0 %}
+          <span class="room-card-badge"><i class="fa-solid fa-leaf"></i> Frequently chosen</span>
+          {% endif %}
+        </div>
+
+        <div class="room-content">
+          <div class="room-topline">
+            <div>
+              <h3>{{ room.name }}</h3>
+              {% if room.capacity %}
+              <div class="room-capacity">{{ room.capacity }}</div>
+              {% endif %}
+            </div>
+            <div class="room-price">
+              NPR {{ room.price|floatformat:0 }}
+              <small>per night</small>
+            </div>
+          </div>
+
+          <p class="room-description">{{ room.description }}</p>
+
+          <div class="room-meta-row">
+            {% if room.bookings > 0 %}
+            <span class="room-meta-pill">Popular with recent guests</span>
+            {% else %}
+            <span class="room-meta-pill">Fresh option to explore</span>
+            {% endif %}
+            {% if room.capacity %}
+            <span class="room-meta-pill">{{ room.capacity }}</span>
+            {% endif %}
+          </div>
+
+          <div class="amenities">
+            {% for amenity in room.amenity_list %}
+            <span><i class="fa-solid fa-check"></i> {{ amenity }}</span>
+            {% endfor %}
+          </div>
+
+          <div class="room-actions">
+            <a href="/bookings/?room={{ room.name|urlencode }}" class="btn-book-room">Book This Room</a>
+            <a href="/about/" class="btn-room-secondary">See Property Details</a>
+          </div>
+        </div>
+      </article>
+      {% empty %}
+      <article class="room-card room-empty">
+        <h3>No rooms available yet</h3>
+        <p>Please add room entries from the admin panel to publish them on the site.</p>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+</div>
 {% endblock %}

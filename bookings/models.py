@@ -2,6 +2,8 @@ from django.db import models
 from django.core.exceptions import ValidationError
 import datetime
 
+# Legacy model kept for migration compatibility.
+# The live public booking flow now uses core.models.Booking.
 class Booking(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()

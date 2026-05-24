@@ -10,7 +10,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'replace-this-later')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv(
+        'ALLOWED_HOSTS',
+        'localhost,127.0.0.1,0.0.0.0,testserver,web'
+    ).split(',')
+    if host.strip()
+]
 
 # Installed apps
 INSTALLED_APPS = [
@@ -100,6 +107,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Ensure custom admin site is loaded early (for dashboard context)
+try:
+    import config.admin  # noqa: F401
+except Exception:
+    pass
+
 # EMAIL CONFIGURATION (GMAIL)
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
@@ -107,8 +120,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'sirupatafarmhouse@gmail.com')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'piflsyubrqlwaael')
-DEFAULT_FROM_EMAIL = 'Mail'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
  
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Request Received</title>
+</head>
+<body style="margin:0;padding:24px;background:#f6f7f4;font-family:Arial,sans-serif;color:#1f2d27;">
+    <div style="max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #dde5df;border-radius:18px;overflow:hidden;">
+        <div style="padding:24px 28px;background:#0f2e23;color:#ffffff;">
+            <p style="margin:0 0 8px;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#d7c495;">Booking Request</p>
+            <h1 style="margin:0;font-size:28px;line-height:1.2;">We received your booking request</h1>
+        </div>
+        <div style="padding:28px;">
+            <p style="margin:0 0 16px;">Hello {{ booking.name|default:"Guest" }},</p>
+            <p style="margin:0 0 20px;line-height:1.7;">
+                Thank you for choosing {{ site_name }}. Your booking request has been received and is now waiting for confirmation from our team.
+            </p>
+
+            <div style="padding:18px 20px;border-radius:14px;background:#f8faf8;border:1px solid #e3ebe5;">
+                <p style="margin:0 0 8px;"><strong>Room:</strong> {{ booking.room }}</p>
+                <p style="margin:0 0 8px;"><strong>Check-in:</strong> {{ booking.checkin|date:"F j, Y" }}</p>
+                <p style="margin:0 0 8px;"><strong>Check-out:</strong> {{ booking.checkout|date:"F j, Y" }}</p>
+                <p style="margin:0;"><strong>Guests:</strong> {{ booking.guests }}</p>
+            </div>
+
+            <p style="margin:20px 0 0;line-height:1.7;">
+                We will contact you once your booking is confirmed.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

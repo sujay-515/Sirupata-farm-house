@@ -1,90 +1,1082 @@
-{% extends "admin/index.html" %}
+{% extends "admin/base_site.html" %}
+{% load i18n %}
 
 {% block extrastyle %}
+{{ block.super }}
+<style>
+    :root {
+        --dashboard-ink: #0f2e23;
+        --dashboard-ink-soft: #1f4b3a;
+        --dashboard-sky: #eef2eb;
+        --dashboard-accent: #6f8f7d;
+        --dashboard-accent-strong: #8ea999;
+        --dashboard-border: #d6ddd9;
+        --dashboard-surface: #ffffff;
+        --dashboard-surface-alt: #f4f6f5;
+        --dashboard-text: #243329;
+        --dashboard-text-soft: #64746a;
+        --dashboard-success: #567a4f;
+        --dashboard-warning: #7a8c61;
+        --dashboard-shadow: rgba(19, 31, 23, 0.08);
+        --dashboard-divider: #e3e8e5;
+        --dashboard-input: #ffffff;
+        --dashboard-page-grad-a: #fbfcfa;
+        --dashboard-page-grad-b: #eff3ee;
+    }
+
+    html[data-theme="dark"] {
+        --dashboard-ink: #e6efe9;
+        --dashboard-ink-soft: #d4e0d8;
+        --dashboard-sky: #2d3f31;
+        --dashboard-accent: #7ea08d;
+        --dashboard-accent-strong: #9eb6a9;
+        --dashboard-border: #4a5848;
+        --dashboard-surface: #17241d;
+        --dashboard-surface-alt: #213127;
+        --dashboard-text: #e6efe9;
+        --dashboard-text-soft: #aab9b0;
+        --dashboard-success: #85aa72;
+        --dashboard-warning: #95a582;
+        --dashboard-shadow: rgba(0, 0, 0, 0.24);
+        --dashboard-divider: #39483a;
+        --dashboard-input: #121c16;
+        --dashboard-page-grad-a: #18251d;
+        --dashboard-page-grad-b: #233127;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        html:not([data-theme="light"]) {
+            --dashboard-ink: #e6efe9;
+            --dashboard-ink-soft: #d4e0d8;
+            --dashboard-sky: #2d3f31;
+            --dashboard-accent: #7ea08d;
+            --dashboard-accent-strong: #9eb6a9;
+            --dashboard-border: #4a5848;
+            --dashboard-surface: #17241d;
+            --dashboard-surface-alt: #213127;
+            --dashboard-text: #e6efe9;
+            --dashboard-text-soft: #aab9b0;
+            --dashboard-success: #85aa72;
+            --dashboard-warning: #95a582;
+            --dashboard-shadow: rgba(0, 0, 0, 0.24);
+            --dashboard-divider: #39483a;
+            --dashboard-input: #121c16;
+            --dashboard-page-grad-a: #18251d;
+            --dashboard-page-grad-b: #233127;
+        }
+    }
+
+    html, body, #container, #content, #content-main {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    #content {
+        width: 100%;
+    }
+
+    #content-main {
+        float: none;
+        width: 100%;
+    }
+
+    #content-related,
+    .breadcrumbs {
+        box-sizing: border-box;
+    }
+
+    .dashboard-shell {
+        display: grid;
+        gap: 16px;
+        width: 100%;
+        max-width: 1240px;
+    }
+
+    .dashboard-hero {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: flex-start;
+        padding: 20px;
+        border: 1px solid var(--dashboard-border);
+        border-radius: 20px;
+        background:
+            radial-gradient(circle at top right, rgba(111, 143, 125, 0.14), transparent 35%),
+            linear-gradient(135deg, var(--dashboard-page-grad-a) 0%, var(--dashboard-page-grad-b) 100%);
+        box-sizing: border-box;
+    }
+
+    .dashboard-hero-copy h1 {
+        margin: 0 0 8px;
+        color: var(--dashboard-ink);
+        font-size: clamp(1.55rem, 2.1vw, 2.2rem);
+        line-height: 1.1;
+    }
+
+    .dashboard-hero-copy p {
+        margin: 0;
+        max-width: 62ch;
+        color: var(--dashboard-text-soft);
+        font-size: 0.98rem;
+    }
+
+    .dashboard-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .dashboard-filter-form {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border: 1px solid var(--dashboard-border);
+        border-radius: 12px;
+        background: color-mix(in srgb, var(--dashboard-surface) 86%, transparent);
+        box-sizing: border-box;
+    }
+
+    .dashboard-filter-form label {
+        color: var(--dashboard-text-soft);
+        font-weight: 600;
+    }
+
+    .dashboard-filter-form select {
+        min-width: 120px;
+    }
+
+    .dashboard-pill-link,
+    .dashboard-pill-button,
+    .dashboard-filter-form button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-height: 36px;
+        padding: 0 12px;
+        border: 1px solid var(--dashboard-border);
+        border-radius: 999px;
+        background: var(--dashboard-surface);
+        color: var(--dashboard-ink);
+        text-decoration: none;
+        cursor: pointer;
+        box-sizing: border-box;
+        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .dashboard-pill-link:hover,
+    .dashboard-pill-button:hover,
+    .dashboard-filter-form button:hover {
+        border-color: var(--dashboard-accent);
+        background: var(--dashboard-sky);
+        transform: translateY(-1px);
+    }
+
+    .dashboard-pill-link.is-primary {
+        background: var(--dashboard-accent);
+        border-color: var(--dashboard-accent);
+        color: #fff;
+    }
+
+    .dashboard-pill-link.is-primary:hover {
+        background: var(--dashboard-accent-strong);
+    }
+
+    .dashboard-stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .dashboard-stat {
+        padding: 16px;
+        border: 1px solid var(--dashboard-border);
+        border-radius: 18px;
+        background: var(--dashboard-surface);
+        box-shadow: 0 10px 30px var(--dashboard-shadow);
+    }
+
+    .dashboard-stat-label {
+        display: block;
+        margin-bottom: 12px;
+        color: var(--dashboard-text-soft);
+        font-size: 0.84rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    .dashboard-stat-value {
+        display: block;
+        color: var(--dashboard-ink);
+        font-size: clamp(1.6rem, 2vw, 2.2rem);
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .dashboard-stat-note {
+        display: block;
+        margin-top: 10px;
+        color: var(--dashboard-text-soft);
+        font-size: 0.9rem;
+    }
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.7fr) minmax(240px, 0.82fr);
+        gap: 16px;
+        align-items: start;
+    }
+
+    .dashboard-main,
+    .dashboard-side {
+        display: grid;
+        gap: 16px;
+        min-width: 0;
+    }
+
+    .dashboard-card {
+        padding: 16px;
+        border: 1px solid var(--dashboard-border);
+        border-radius: 18px;
+        background: var(--dashboard-surface);
+        box-shadow: 0 10px 30px var(--dashboard-shadow);
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    .dashboard-card-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: flex-start;
+        margin-bottom: 14px;
+    }
+
+    .dashboard-card-title {
+        margin: 0;
+        color: var(--dashboard-ink);
+        font-size: 1.15rem;
+    }
+
+    .dashboard-card-subtitle {
+        margin: 6px 0 0;
+        color: var(--dashboard-text-soft);
+        font-size: 0.92rem;
+    }
+
+    .dashboard-chart-card canvas {
+        width: 100% !important;
+        max-width: 100%;
+    }
+
+    .dashboard-chart-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(220px, 0.8fr);
+        gap: 14px;
+        align-items: center;
+    }
+
+    .dashboard-chart-wrap {
+        min-width: 0;
+        min-height: 240px;
+    }
+
+    .dashboard-room-list {
+        display: grid;
+        gap: 10px;
+    }
+
+    .dashboard-room-chip {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--dashboard-border);
+        border-radius: 12px;
+        background: var(--dashboard-surface-alt);
+        color: var(--dashboard-text);
+        text-align: left;
+        cursor: pointer;
+        box-sizing: border-box;
+    }
+
+    .dashboard-room-chip:hover,
+    .dashboard-room-chip.is-active {
+        border-color: var(--dashboard-accent);
+        background: var(--dashboard-sky);
+    }
+
+    .dashboard-room-count {
+        flex-shrink: 0;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(111, 143, 125, 0.14);
+        color: var(--dashboard-accent-strong);
+        font-size: 0.82rem;
+        font-weight: 700;
+    }
+
+    .dashboard-bookings-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .dashboard-search {
+        flex: 1 1 240px;
+        min-width: 0;
+        padding: 9px 11px;
+        border: 1px solid var(--dashboard-border);
+        border-radius: 12px;
+        background: var(--dashboard-input);
+        color: var(--dashboard-text);
+        box-sizing: border-box;
+    }
+
+    .dashboard-filter-status {
+        color: var(--dashboard-text-soft);
+        font-size: 0.92rem;
+    }
+
+    .dashboard-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    .dashboard-table th,
+    .dashboard-table td {
+        padding: 10px 10px;
+        border-bottom: 1px solid var(--dashboard-divider);
+        text-align: left;
+        vertical-align: top;
+        overflow-wrap: anywhere;
+        font-size: 0.9rem;
+    }
+
+    .dashboard-table th {
+        color: var(--dashboard-text-soft);
+        font-size: 0.76rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    .dashboard-table td {
+        color: var(--dashboard-text);
+    }
+
+    .dashboard-ops-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .dashboard-mini-stat {
+        padding: 14px;
+        border: 1px solid var(--dashboard-border);
+        border-radius: 14px;
+        background: var(--dashboard-surface-alt);
+    }
+
+    .dashboard-mini-stat-label {
+        display: block;
+        color: var(--dashboard-text-soft);
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    .dashboard-mini-stat-value {
+        display: block;
+        margin-top: 8px;
+        color: var(--dashboard-ink);
+        font-size: 1.55rem;
+        font-weight: 700;
+    }
+
+    .dashboard-stay-list {
+        display: grid;
+        gap: 10px;
+    }
+
+    .dashboard-stay-item {
+        display: grid;
+        gap: 6px;
+        padding: 12px 14px;
+        border: 1px solid var(--dashboard-border);
+        border-radius: 14px;
+        background: var(--dashboard-surface-alt);
+        box-sizing: border-box;
+    }
+
+    .dashboard-stay-topline {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: baseline;
+    }
+
+    .dashboard-stay-name {
+        color: var(--dashboard-ink);
+        font-weight: 700;
+    }
+
+    .dashboard-stay-date,
+    .dashboard-stay-meta {
+        color: var(--dashboard-text-soft);
+        font-size: 0.88rem;
+    }
+
+    .dashboard-side-panel {
+        position: sticky;
+        top: 16px;
+        display: grid;
+        gap: 16px;
+    }
+
+    .dashboard-side-card {
+        padding: 16px;
+        border: 1px solid var(--dashboard-border);
+        border-radius: 18px;
+        background: linear-gradient(180deg, var(--dashboard-surface) 0%, var(--dashboard-surface-alt) 100%);
+        box-sizing: border-box;
+    }
+
+    .dashboard-side-card h3 {
+        margin: 0 0 12px;
+        color: var(--dashboard-ink);
+        font-size: 1rem;
+    }
+
+    .dashboard-action-list,
+    .dashboard-review-list {
+        display: grid;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .dashboard-action-list a {
+        display: block;
+        padding: 10px 12px;
+        border: 1px solid var(--dashboard-border);
+        border-radius: 12px;
+        background: var(--dashboard-surface);
+        color: var(--dashboard-text);
+        text-decoration: none;
+        box-sizing: border-box;
+        overflow-wrap: anywhere;
+    }
+
+    .dashboard-action-list a:hover {
+        border-color: var(--dashboard-accent);
+        background: var(--dashboard-sky);
+    }
+
+    .dashboard-review-item {
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: var(--dashboard-surface);
+        border: 1px solid var(--dashboard-divider);
+        box-sizing: border-box;
+    }
+
+    .dashboard-review-name {
+        display: block;
+        color: var(--dashboard-ink);
+        font-weight: 700;
+    }
+
+    .dashboard-review-meta {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 6px;
+        color: var(--dashboard-text-soft);
+        font-size: 0.87rem;
+    }
+
+    .dashboard-empty {
+        color: var(--dashboard-text-soft);
+        margin: 0;
+    }
+
+    @media (max-width: 1320px) {
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .dashboard-side-panel {
+            position: static;
+        }
+    }
+
+    @media (max-width: 1100px) {
+        .dashboard-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .dashboard-chart-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .dashboard-ops-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .dashboard-hero,
+        .dashboard-card-header,
+        .dashboard-review-meta,
+        .dashboard-stay-topline {
+            display: grid;
+        }
+
+        .dashboard-toolbar {
+            justify-content: stretch;
+        }
+
+        .dashboard-table,
+        .dashboard-table thead,
+        .dashboard-table tbody,
+        .dashboard-table tr,
+        .dashboard-table th,
+        .dashboard-table td {
+            display: block;
+            width: 100%;
+        }
+
+        .dashboard-table thead {
+            display: none;
+        }
+
+        .dashboard-table tbody {
+            display: grid;
+            gap: 10px;
+        }
+
+        .dashboard-table tr {
+            padding: 10px 12px;
+            border: 1px solid var(--dashboard-border);
+            border-radius: 14px;
+            background: var(--dashboard-surface-alt);
+            box-sizing: border-box;
+        }
+
+        .dashboard-table td {
+            padding: 5px 0;
+            border: 0;
+            font-size: 0.92rem;
+        }
+
+        .dashboard-table td::before {
+            content: attr(data-label);
+            display: block;
+            margin-bottom: 2px;
+            color: var(--dashboard-text-soft);
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+    }
+
+    @media (max-width: 760px) {
+        .dashboard-stats {
+            grid-template-columns: 1fr;
+        }
+
+        .dashboard-filter-form,
+        .dashboard-pill-link,
+        .dashboard-pill-button {
+            width: 100%;
+        }
+
+        .dashboard-filter-form {
+            grid-template-columns: 1fr;
+        }
+
+        .dashboard-hero,
+        .dashboard-card,
+        .dashboard-stat,
+        .dashboard-side-card {
+            padding-left: 14px;
+            padding-right: 14px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extrahead %}
 {{ block.super }}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 
 {% block content %}
 <div id="content-main">
-    <div class="module">
-        <h2>Dashboard Overview</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px;">
-            <div style="background: #e9ecef; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
-                <h3 style="margin: 0; color: #495057;">{{ total_bookings }}</h3>
-                <p style="margin: 5px 0 0; color: #6c757d;">Total Bookings</p>
+    <div class="dashboard-shell">
+        <section class="dashboard-hero">
+            <div class="dashboard-hero-copy">
+                <h1>Farm House Control Room</h1>
+                <p>Monitor bookings, keep reviews moving, and jump into the parts of the site that need attention without hunting through the default admin menus.</p>
             </div>
-            <div style="background: #e9ecef; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
-                <h3 style="margin: 0; color: #495057;">{{ total_reviews }}</h3>
-                <p style="margin: 5px 0 0; color: #6c757d;">Total Reviews</p>
+            <div class="dashboard-toolbar">
+                <form method="get" class="dashboard-filter-form">
+                    <label for="period">Period</label>
+                    <select name="period" id="period">
+                        <option value="3" {% if period == 3 %}selected{% endif %}>Last 3 months</option>
+                        <option value="6" {% if period == 6 %}selected{% endif %}>Last 6 months</option>
+                        <option value="12" {% if period == 12 %}selected{% endif %}>Last 12 months</option>
+                    </select>
+                    <button type="submit">Update</button>
+                </form>
+                <a class="dashboard-pill-link is-primary" href="{{ create_booking_url }}">New Booking</a>
+                <a class="dashboard-pill-link" href="{{ pending_reviews_url }}">Pending Reviews</a>
+                <button type="button" class="dashboard-pill-button" id="refreshDashboard">Refresh</button>
             </div>
-            <div style="background: #e9ecef; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
-                <h3 style="margin: 0; color: #495057;">{{ pending_reviews }}</h3>
-                <p style="margin: 5px 0 0; color: #6c757d;">Pending Reviews</p>
-            </div>
-            <div style="background: #e9ecef; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
-                <h3 style="margin: 0; color: #495057;">{{ recent_bookings }}</h3>
-                <p style="margin: 5px 0 0; color: #6c757d;">Bookings This Month</p>
-            </div>
-        </div>
+        </section>
 
-        <h3>Bookings Over Time</h3>
-        <canvas id="bookingsChart" width="400" height="200"></canvas>
+        <section class="dashboard-stats">
+            <article class="dashboard-stat">
+                <span class="dashboard-stat-label">Total Bookings</span>
+                <span class="dashboard-stat-value">{{ total_bookings }}</span>
+                <span class="dashboard-stat-note">All bookings captured in the system</span>
+            </article>
+            <article class="dashboard-stat">
+                <span class="dashboard-stat-label">Bookings This Month</span>
+                <span class="dashboard-stat-value">{{ recent_bookings }}</span>
+                <span class="dashboard-stat-note">Fresh activity since the month started</span>
+            </article>
+            <article class="dashboard-stat">
+                <span class="dashboard-stat-label">Total Reviews</span>
+                <span class="dashboard-stat-value">{{ total_reviews }}</span>
+                <span class="dashboard-stat-note">Guest feedback recorded so far</span>
+            </article>
+            <article class="dashboard-stat">
+                <span class="dashboard-stat-label">Pending Approval</span>
+                <span class="dashboard-stat-value">{{ pending_reviews }}</span>
+                <span class="dashboard-stat-note">Reviews waiting for admin action</span>
+            </article>
+        </section>
 
-        <h3>Recent Bookings</h3>
-        <table style="width: 100%; border-collapse: collapse;">
-            <thead>
-                <tr style="background: #f8f9fa;">
-                    <th style="padding: 10px; border: 1px solid #ddd;">Name</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Room</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Check-in</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for booking in recent_bookings_list %}
-                <tr>
-                    <td style="padding: 10px; border: 1px solid #ddd;">{{ booking.name }}</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;">{{ booking.room }}</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;">{{ booking.checkin }}</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;">Confirmed</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="4" style="padding: 10px; text-align: center;">No recent bookings</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <section class="dashboard-grid">
+            <div class="dashboard-main">
+                <article class="dashboard-card dashboard-chart-card">
+                    <div class="dashboard-card-header">
+                        <div>
+                            <h2 class="dashboard-card-title">Booking Trend</h2>
+                            <p class="dashboard-card-subtitle">A quick look at how reservations are moving over the selected time period.</p>
+                        </div>
+                    </div>
+                    <div class="dashboard-chart-wrap">
+                        <canvas id="bookingsChart"></canvas>
+                    </div>
+                </article>
+
+                <article class="dashboard-card dashboard-chart-card">
+                    <div class="dashboard-card-header">
+                        <div>
+                            <h2 class="dashboard-card-title">Stay Seasonality</h2>
+                            <p class="dashboard-card-subtitle">Monthly arrival patterns based on guest check-in dates, useful for planning staffing and promotions.</p>
+                        </div>
+                    </div>
+                    <div class="dashboard-chart-grid">
+                        <div class="dashboard-chart-wrap">
+                            <canvas id="stayMonthsChart"></canvas>
+                        </div>
+                        <div class="dashboard-room-list">
+                            <div class="dashboard-side-card" style="padding:0;border:none;box-shadow:none;background:transparent;">
+                                <h3 style="margin-top:0;">Peak Months</h3>
+                                <ul class="dashboard-review-list">
+                                    {% for month in peak_stay_months %}
+                                    <li class="dashboard-review-item">
+                                        <span class="dashboard-review-name">{{ month.label }}</span>
+                                        <div class="dashboard-review-meta">
+                                            <span>{{ month.count }} stays</span>
+                                        </div>
+                                    </li>
+                                    {% empty %}
+                                    <li class="dashboard-review-item">No stay history yet.</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="dashboard-side-card" style="padding:0;border:none;box-shadow:none;background:transparent;">
+                                <h3 style="margin-top:0;">Quieter Months</h3>
+                                <ul class="dashboard-review-list">
+                                    {% for month in quieter_stay_months %}
+                                    <li class="dashboard-review-item">
+                                        <span class="dashboard-review-name">{{ month.label }}</span>
+                                        <div class="dashboard-review-meta">
+                                            <span>{{ month.count }} stays</span>
+                                        </div>
+                                    </li>
+                                    {% empty %}
+                                    <li class="dashboard-review-item">No trend data yet.</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <div>
+                            <h2 class="dashboard-card-title">Room Interest</h2>
+                            <p class="dashboard-card-subtitle">Use the room chips to filter the booking table instantly.</p>
+                        </div>
+                        <button type="button" class="dashboard-pill-button" id="clearRoomFilter">Show All</button>
+                    </div>
+
+                    <div class="dashboard-chart-grid">
+                        <div class="dashboard-chart-wrap">
+                            <canvas id="roomBookingsChart"></canvas>
+                        </div>
+                        <div class="dashboard-room-list">
+                            {% for room_obj in top_rooms %}
+                            <button type="button" class="dashboard-room-chip" data-room-filter="{{ room_obj.room }}">
+                                <span>{{ room_obj.room }}</span>
+                                <span class="dashboard-room-count">{{ room_obj.total }}</span>
+                            </button>
+                            {% empty %}
+                            <p class="dashboard-empty">No room bookings yet.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </article>
+
+                <article class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <div>
+                            <h2 class="dashboard-card-title">Operations Snapshot</h2>
+                            <p class="dashboard-card-subtitle">The quickest way to see who is arriving, leaving, and what needs attention next.</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-ops-grid">
+                        <div class="dashboard-mini-stat">
+                            <span class="dashboard-mini-stat-label">Today Check-ins</span>
+                            <span class="dashboard-mini-stat-value">{{ today_checkins_count }}</span>
+                        </div>
+                        <div class="dashboard-mini-stat">
+                            <span class="dashboard-mini-stat-label">Today Check-outs</span>
+                            <span class="dashboard-mini-stat-value">{{ today_checkouts_count }}</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <div>
+                            <h2 class="dashboard-card-title">Upcoming Stays</h2>
+                            <p class="dashboard-card-subtitle">The next arrivals on the calendar, starting from {{ today|date:"M d, Y" }}.</p>
+                        </div>
+                        <a class="dashboard-pill-link" href="{{ all_bookings_url }}">All Bookings</a>
+                    </div>
+
+                    <div class="dashboard-stay-list">
+                        {% for booking in upcoming_bookings %}
+                        <article class="dashboard-stay-item">
+                            <div class="dashboard-stay-topline">
+                                <span class="dashboard-stay-name">{{ booking.name|default:"Guest" }}</span>
+                                <span class="dashboard-stay-date">{{ booking.checkin|date:"M d, Y" }}</span>
+                            </div>
+                            <div class="dashboard-stay-meta">{{ booking.room }} | Guests: {{ booking.guests }}</div>
+                            <div class="dashboard-stay-meta">Checkout {{ booking.checkout|date:"M d, Y" }}</div>
+                        </article>
+                        {% empty %}
+                        <p class="dashboard-empty">No upcoming stays found.</p>
+                        {% endfor %}
+                    </div>
+                </article>
+
+                <article class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <div>
+                            <h2 class="dashboard-card-title">Recent Bookings</h2>
+                            <p class="dashboard-card-subtitle">Search by guest name or room, then combine it with the room chips if needed. This section now folds into stacked booking cards on smaller screens instead of scrolling sideways.</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-bookings-toolbar">
+                        <input id="bookingSearch" class="dashboard-search" type="search" placeholder="Search guest or room">
+                        <span id="roomFilterStatus" class="dashboard-filter-status">Showing all bookings</span>
+                    </div>
+
+                    <table class="dashboard-table" id="recentBookingsTable">
+                        <thead>
+                            <tr>
+                                <th>Guest</th>
+                                <th>Room</th>
+                                <th>Check-in</th>
+                                <th>Check-out</th>
+                                <th>Guests</th>
+                                <th>Status</th>
+                                <th>Booked</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in recent_bookings_list %}
+                            <tr data-room="{{ booking.room|lower }}" data-search="{{ booking.name|default:'Guest'|lower }} {{ booking.room|lower }}">
+                                <td data-label="Guest">{{ booking.name|default:"Guest" }}</td>
+                                <td data-label="Room">{{ booking.room }}</td>
+                                <td data-label="Check-in">{{ booking.checkin }}</td>
+                                <td data-label="Check-out">{{ booking.checkout }}</td>
+                                <td data-label="Guests">{{ booking.guests }}</td>
+                                <td data-label="Status">{{ booking.get_status_display }}</td>
+                                <td data-label="Booked">{{ booking.created_at|date:"M d, Y" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7">No recent bookings yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </article>
+            </div>
+
+            <aside class="dashboard-side">
+                <div class="dashboard-side-panel">
+                    <section class="dashboard-side-card">
+                        <h3>Quick Actions</h3>
+                        <ul class="dashboard-action-list">
+                            <li><a href="{{ create_booking_url }}">Create a new booking</a></li>
+                            <li><a href="{{ pending_reviews_url }}">Review pending approvals</a></li>
+                            <li><a href="{{ site_content_url }}">Edit site content</a></li>
+                            <li><a href="{{ about_locations_url }}">Manage about locations</a></li>
+                            <li><a href="{{ today_checkins_url }}">Open today's check-ins</a></li>
+                            <li><a href="{{ today_checkouts_url }}">Open today's check-outs</a></li>
+                            <li><a href="{{ all_bookings_url }}">Open all bookings</a></li>
+                            <li><a href="{{ all_reviews_url }}">Open all reviews</a></li>
+                        </ul>
+                    </section>
+
+                    <section class="dashboard-side-card">
+                        <h3>Today At A Glance</h3>
+                        <ul class="dashboard-review-list">
+                            {% for booking in today_checkins %}
+                            <li class="dashboard-review-item">
+                                <span class="dashboard-review-name">{{ booking.name|default:"Guest" }}</span>
+                                <div class="dashboard-review-meta">
+                                    <span>Check-in</span>
+                                    <span>{{ booking.room }}</span>
+                                </div>
+                            </li>
+                            {% empty %}
+                            <li class="dashboard-review-item">No check-ins scheduled today.</li>
+                            {% endfor %}
+
+                            {% for booking in today_checkouts %}
+                            <li class="dashboard-review-item">
+                                <span class="dashboard-review-name">{{ booking.name|default:"Guest" }}</span>
+                                <div class="dashboard-review-meta">
+                                    <span>Check-out</span>
+                                    <span>{{ booking.room }}</span>
+                                </div>
+                            </li>
+                            {% empty %}
+                            {% if not today_checkins %}
+                            <li class="dashboard-review-item">No check-outs scheduled today.</li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </section>
+
+                    <section class="dashboard-side-card">
+                        <h3>Latest Reviews</h3>
+                        <ul class="dashboard-review-list">
+                            {% for review in latest_reviews %}
+                            <li class="dashboard-review-item">
+                                <span class="dashboard-review-name">{{ review.user_name }}</span>
+                                <div class="dashboard-review-meta">
+                                    <span>{{ review.rating }}/5</span>
+                                    <span>{{ review.created_at|date:"M d, Y" }}</span>
+                                </div>
+                            </li>
+                            {% empty %}
+                            <li class="dashboard-review-item">No recent reviews.</li>
+                            {% endfor %}
+                        </ul>
+                    </section>
+                </div>
+            </aside>
+        </section>
     </div>
-
-    {{ block.super }}
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const ctx = document.getElementById('bookingsChart').getContext('2d');
     const bookingsData = {{ bookings_chart_data|safe }};
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: bookingsData.labels,
-            datasets: [{
-                label: 'Bookings',
-                data: bookingsData.data,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+    const stayMonthsData = {{ stay_month_chart_data|safe }};
+    const roomData = {{ room_bookings_chart_data|safe }};
+
+    const bookingChartCanvas = document.getElementById('bookingsChart');
+    if (bookingChartCanvas) {
+        new Chart(bookingChartCanvas, {
+            type: 'line',
+            data: {
+                labels: bookingsData.labels,
+                datasets: [{
+                    label: 'Bookings',
+                    data: bookingsData.data,
+                    borderColor: '#1f4b3a',
+                    backgroundColor: 'rgba(111, 143, 125, 0.18)',
+                    tension: 0.35,
+                    fill: true,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
                 }
             }
+        });
+    }
+
+    const stayMonthsCanvas = document.getElementById('stayMonthsChart');
+    if (stayMonthsCanvas) {
+        new Chart(stayMonthsCanvas, {
+            type: 'bar',
+            data: {
+                labels: stayMonthsData.labels,
+                datasets: [{
+                    label: 'Check-ins',
+                    data: stayMonthsData.data,
+                    backgroundColor: '#8ea999',
+                    borderRadius: 10,
+                    borderSkipped: false,
+                    hoverBackgroundColor: '#1f4b3a'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    const roomChartCanvas = document.getElementById('roomBookingsChart');
+    if (roomChartCanvas) {
+        new Chart(roomChartCanvas, {
+            type: 'doughnut',
+            data: {
+                labels: roomData.labels,
+                datasets: [{
+                    data: roomData.data,
+                    backgroundColor: ['#0f2e23', '#1f4b3a', '#6f8f7d', '#8ea999', '#b6c8bc', '#4d6255', '#95a582', '#d6ddd9', '#e7ece8'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '62%',
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    }
+
+    const refreshDashboard = document.getElementById('refreshDashboard');
+    if (refreshDashboard) {
+        refreshDashboard.addEventListener('click', function() {
+            window.location.reload();
+        });
+    }
+
+    const bookingRows = Array.from(document.querySelectorAll('#recentBookingsTable tbody tr[data-room]'));
+    const roomButtons = Array.from(document.querySelectorAll('[data-room-filter]'));
+    const clearRoomFilter = document.getElementById('clearRoomFilter');
+    const bookingSearch = document.getElementById('bookingSearch');
+    const roomFilterStatus = document.getElementById('roomFilterStatus');
+    let activeRoom = null;
+
+    function updateBookingFilters() {
+        const searchValue = bookingSearch ? bookingSearch.value.trim().toLowerCase() : '';
+        let visibleCount = 0;
+
+        bookingRows.forEach(function(row) {
+            const rowRoom = row.dataset.room || '';
+            const rowSearch = row.dataset.search || '';
+            const matchesRoom = !activeRoom || rowRoom === activeRoom.toLowerCase();
+            const matchesSearch = !searchValue || rowSearch.includes(searchValue);
+            const isVisible = matchesRoom && matchesSearch;
+            row.style.display = isVisible ? '' : 'none';
+            if (isVisible) {
+                visibleCount += 1;
+            }
+        });
+
+        const roomLabel = activeRoom ? 'Room: ' + activeRoom : 'All rooms';
+        const searchLabel = searchValue ? ' | Search: "' + searchValue + '"' : '';
+        if (roomFilterStatus) {
+            roomFilterStatus.textContent = roomLabel + searchLabel + ' | ' + visibleCount + ' booking' + (visibleCount === 1 ? '' : 's');
         }
+    }
+
+    roomButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            const room = this.dataset.roomFilter;
+            activeRoom = activeRoom === room ? null : room;
+            roomButtons.forEach(function(item) {
+                item.classList.toggle('is-active', item.dataset.roomFilter === activeRoom);
+            });
+            updateBookingFilters();
+        });
     });
+
+    if (clearRoomFilter) {
+        clearRoomFilter.addEventListener('click', function() {
+            activeRoom = null;
+            roomButtons.forEach(function(item) {
+                item.classList.remove('is-active');
+            });
+            updateBookingFilters();
+        });
+    }
+
+    if (bookingSearch) {
+        bookingSearch.addEventListener('input', updateBookingFilters);
+    }
+
+    updateBookingFilters();
 });
 </script>
 {% endblock %}

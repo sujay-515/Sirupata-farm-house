@@ -1,196 +1,655 @@
 {% extends "core/base.html" %}
 {% load static %}
 
+{% block title %}Hotel | Sirupata R-Star{% endblock %}
+
 {% block content %}
-
 <style>
-/* ===== GENERAL ===== */
-.section {
-    padding: 90px 6%;
-}
-.title {
-    font-size: 42px;
-    margin-bottom: 20px;
-}
-.subtitle {
-    color: #b9974d;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-size: 14px;
-}
-.text {
-    max-width: 600px;
-    line-height: 1.8;
-    color: #555;
+.hotel-shell {
+    background:
+        radial-gradient(circle at top right, rgba(201, 162, 77, 0.08), transparent 24%),
+        linear-gradient(180deg, #f7f7f3 0%, #edf2ec 100%);
 }
 
-/* ===== HERO ===== */
 .hotel-hero {
-    height: 90vh;
-    position: relative;
-    overflow: hidden;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 72px 24px 44px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+    gap: 30px;
+    align-items: center;
 }
-.hotel-hero img {
+
+.hotel-hero h1 {
+    margin: 0 0 16px;
+    color: #0f2e23;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.7rem);
+    line-height: 0.98;
+}
+
+.hotel-hero p {
+    margin: 0 0 24px;
+    max-width: 60ch;
+    color: #5f6d66;
+    line-height: 1.85;
+}
+
+.hotel-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.hotel-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 20px;
+    border-radius: 999px;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hotel-btn:hover {
+    transform: translateY(-2px);
+}
+
+.hotel-btn-primary {
+    background: #0f2e23;
+    color: #fff;
+    box-shadow: 0 16px 28px rgba(15, 46, 35, 0.18);
+}
+
+.hotel-btn-secondary {
+    background: #fff;
+    color: #0f2e23;
+    border: 1px solid rgba(15, 46, 35, 0.12);
+}
+
+.hotel-hero-media {
+    position: relative;
+    min-height: 520px;
+}
+
+.hotel-hero-main,
+.hotel-hero-accent {
+    position: absolute;
+    overflow: hidden;
+    border-radius: 30px;
+    box-shadow: 0 24px 48px rgba(15, 46, 35, 0.16);
+}
+
+.hotel-hero-main {
+    inset: 0 44px 78px 0;
+}
+
+.hotel-hero-accent {
+    right: 0;
+    bottom: 0;
+    width: 48%;
+    height: 42%;
+    border: 8px solid rgba(247, 247, 243, 0.94);
+}
+
+.hotel-hero-main img,
+.hotel-hero-accent img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
 }
-.hero-overlay {
+
+.hotel-floating-note {
     position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
+    left: 16px;
+    bottom: 24px;
+    max-width: 280px;
+    padding: 18px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 16px 36px rgba(15, 46, 35, 0.14);
 }
-.hero-content {
-    position: absolute;
-    inset: 0;
-    display: flex;
+
+.hotel-floating-note strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #0f2e23;
+}
+
+.hotel-floating-note span {
+    color: #5d6a63;
+    line-height: 1.65;
+}
+
+.hotel-highlights {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px 26px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.hotel-highlight {
+    padding: 22px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(15, 46, 35, 0.08);
+    box-shadow: 0 14px 28px rgba(15, 46, 35, 0.08);
+}
+
+.hotel-highlight-icon {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 16px;
+    border-radius: 14px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    color: white;
-}
-.hero-content h1 {
-    font-size: 56px;
-    margin-bottom: 15px;
-}
-.hero-content a {
-    padding: 14px 40px;
-    background: #b9974d;
-    color: #fff;
-    text-decoration: none;
-    letter-spacing: 1px;
+    background: rgba(201, 162, 77, 0.16);
+    color: #b79242;
 }
 
-/* ===== ABOUT ===== */
-.about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-}
-.about-grid img {
-    width: 100%;
-    border-radius: 10px;
+.hotel-highlight h3 {
+    margin: 0 0 10px;
+    color: #0f2e23;
+    font-size: 1.05rem;
 }
 
-/* ===== AMENITIES ===== */
-.amenities {
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    gap: 30px;
-    text-align: center;
+.hotel-highlight p {
+    margin: 0;
+    color: #67746d;
+    line-height: 1.7;
 }
-.amenity {
+
+.hotel-section {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px 24px;
+}
+
+.hotel-story-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
+    gap: 26px;
+}
+
+.hotel-card {
     padding: 30px;
-    border: 1px solid #eee;
-}
-.amenity i {
-    font-size: 34px;
-    color: #b9974d;
-    margin-bottom: 15px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(15, 46, 35, 0.08);
+    box-shadow: 0 16px 34px rgba(15, 46, 35, 0.08);
 }
 
-/* ===== GALLERY ===== */
-.gallery {
+.hotel-card h2,
+.hotel-gallery-head h2,
+.hotel-cta h2 {
+    margin: 0 0 14px;
+    color: #0f2e23;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3vw, 2.7rem);
+}
+
+.hotel-card p,
+.hotel-gallery-head p,
+.hotel-detail-list span,
+.hotel-cta p {
+    margin: 0;
+    color: #5f6d66;
+    line-height: 1.85;
+}
+
+.hotel-story-list {
     display: grid;
-    grid-template-columns: repeat(4,1fr);
-    gap: 20px;
-}
-.gallery img {
-    width: 100%;
-    border-radius: 8px;
+    gap: 16px;
 }
 
-/* ===== CTA ===== */
-.cta {
-    background: #1b3a2b;
-    color: white;
+.hotel-story-item {
+    padding-top: 16px;
+    border-top: 1px solid rgba(15, 46, 35, 0.1);
+}
+
+.hotel-story-item:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.hotel-story-item strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #0f2e23;
+}
+
+.hotel-gallery-head {
+    margin-bottom: 22px;
+    max-width: 62ch;
+}
+
+.hotel-gallery-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+    gap: 18px;
+}
+
+.hotel-gallery-lead,
+.hotel-gallery-side {
+    min-width: 0;
+}
+
+.hotel-gallery-lead figure,
+.hotel-gallery-side figure {
+    margin: 0;
+}
+
+.hotel-gallery-grid img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 22px;
+    box-shadow: 0 14px 28px rgba(15, 46, 35, 0.1);
+}
+
+.hotel-gallery-lead {
+    position: relative;
+}
+
+.hotel-gallery-lead img {
+    height: 520px;
+}
+
+.hotel-gallery-badge {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 13px;
+    border-radius: 999px;
+    background: rgba(15, 46, 35, 0.88);
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.hotel-gallery-caption {
+    position: absolute;
+    left: 22px;
+    right: 22px;
+    bottom: 22px;
+    padding: 18px 20px;
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(15, 46, 35, 0.04) 0%, rgba(15, 46, 35, 0.84) 100%);
+    color: #fff;
+}
+
+.hotel-gallery-caption strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1.08rem;
+}
+
+.hotel-gallery-caption span {
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.6;
+}
+
+.hotel-gallery-side {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.hotel-gallery-side img {
+    height: 252px;
+}
+
+.hotel-gallery-side figure {
+    position: relative;
+}
+
+.hotel-gallery-mini-label {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    padding: 8px 10px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #0f2e23;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.hotel-gallery-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    color: #0f2e23;
+    font-weight: 600;
+}
+
+.hotel-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.hotel-detail-list {
+    display: grid;
+    gap: 14px;
+}
+
+.hotel-detail-item {
+    padding: 18px 20px;
+    border-radius: 20px;
+    background: #f7f8f5;
+    border: 1px solid rgba(15, 46, 35, 0.06);
+}
+
+.hotel-detail-item strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #0f2e23;
+}
+
+.hotel-cta {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 28px 24px 96px;
+}
+
+.hotel-cta-card {
+    padding: 34px;
+    border-radius: 32px;
+    background: linear-gradient(135deg, #102f24 0%, #244233 100%);
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 24px 44px rgba(15, 46, 35, 0.2);
+}
+
+.hotel-cta h2 {
+    color: #fff;
+}
+
+.hotel-cta p {
+    max-width: 58ch;
+    margin: 0 auto 22px;
+    color: rgba(255, 255, 255, 0.76);
+}
+
+.hotel-empty-gallery {
+    padding: 28px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px dashed rgba(15, 46, 35, 0.16);
+    color: #64736b;
     text-align: center;
 }
-.cta a {
-    background: #b9974d;
-    padding: 15px 40px;
-    color: white;
-    text-decoration: none;
-}
 
-/* ===== RESPONSIVE ===== */
-@media(max-width: 768px){
-    .about-grid,
-    .amenities,
-    .gallery {
+@media (max-width: 1080px) {
+    .hotel-hero,
+    .hotel-story-grid,
+    .hotel-details-grid,
+    .hotel-highlights {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .hotel-gallery-grid {
         grid-template-columns: 1fr;
     }
-    .hero-content h1 {
-        font-size: 38px;
+
+    .hotel-gallery-side {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 860px) {
+    .hotel-hero,
+    .hotel-highlights,
+    .hotel-story-grid,
+    .hotel-details-grid,
+    .hotel-gallery-grid,
+    .hotel-gallery-side {
+        grid-template-columns: 1fr;
+    }
+
+    .hotel-hero-media {
+        min-height: 420px;
+    }
+
+    .hotel-hero-main {
+        inset: 0 28px 62px 0;
+    }
+
+    .hotel-hero-accent {
+        width: 50%;
+        height: 40%;
+    }
+
+    .hotel-gallery-lead img {
+        height: 360px;
+    }
+
+    .hotel-gallery-side img {
+        height: 220px;
+    }
+}
+
+@media (max-width: 560px) {
+    .hotel-hero,
+    .hotel-section,
+    .hotel-cta {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .hotel-hero-main {
+        inset: 0 14px 56px 0;
+    }
+
+    .hotel-hero-accent {
+        width: 56%;
+    }
+
+    .hotel-floating-note {
+        left: 10px;
+        right: 10px;
+        max-width: none;
     }
 }
 </style>
 
-<!-- HERO -->
-<section class="hotel-hero">
-    {% if featured %}
-        <img src="{{ featured.0.image.url }}">
-    {% endif %}
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
+<div class="hotel-shell">
+    <section class="hotel-hero">
         <div>
-            <div class="subtitle">Luxury Stay in Butwal</div>
-            <h1>R-Asad Hotel</h1>
-            <a href="/bookings/">Book Your Stay</a>
-        </div>
-    </div>
-</section>
-
-<!-- ABOUT -->
-<section class="section">
-    <div class="about-grid">
-        <div>
-            <div class="subtitle">About R-Asad</div>
-            <h2 class="title">Comfort Meets Elegance</h2>
-            <p class="text">
-                R-Asad Hotel offers a refined hospitality experience in the heart
-                of Butwal. Designed for business travelers and families alike,
-                we combine modern luxury with warm Nepali hospitality.
+            <h1>{{ hotel.name|default:"Sirupata R-Star Hotel" }}</h1>
+            <p>
+                {{ hotel.description|default:"A stay designed for comfort, easy access, and a more polished hospitality experience for guests visiting Butwal and nearby destinations." }}
             </p>
+            <div class="hotel-hero-actions">
+                <a href="/bookings/" class="hotel-btn hotel-btn-primary">Book Your Stay</a>
+                <a href="/rooms/" class="hotel-btn hotel-btn-secondary">See Rooms</a>
+            </div>
         </div>
-        {% if featured|length > 1 %}
-            <img src="{{ featured.1.image.url }}">
+
+        <div class="hotel-hero-media">
+            <div class="hotel-hero-main">
+                {% if hotel and hotel.hero_image %}
+                <img src="{{ hotel.hero_image.url }}" alt="{{ hotel.name }}">
+                {% else %}
+                <img src="{% static 'core/hero/farmhouse.jpg' %}" alt="Sirupata hotel stay">
+                {% endif %}
+            </div>
+            <div class="hotel-hero-accent">
+                {% if gallery %}
+                <img src="{{ gallery.0.image.url }}" alt="{{ gallery.0.title|default:hotel.name }}">
+                {% elif hotel and hotel.hero_image %}
+                <img src="{{ hotel.hero_image.url }}" alt="{{ hotel.name }}">
+                {% else %}
+                <img src="{% static 'core/sections/hill1.jpg' %}" alt="Sirupata stay experience">
+                {% endif %}
+            </div>
+            <div class="hotel-floating-note">
+                <strong>{{ hotel.location|default:"Butwal, Nepal" }}</strong>
+                <span>{{ hotel.ideal_for|default:"Well suited for family stays, short stopovers, regional travel, and guests looking for comfort with easy access." }}</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="hotel-highlights">
+        <article class="hotel-highlight">
+            <span class="hotel-highlight-icon"><i class="fa-solid fa-location-dot"></i></span>
+            <h3>Convenient location</h3>
+            <p>{{ hotel.location|default:"Easy access to Butwal and nearby travel routes." }}</p>
+        </article>
+        <article class="hotel-highlight">
+            <span class="hotel-highlight-icon"><i class="fa-solid fa-bed"></i></span>
+            <h3>Comfort-focused stay</h3>
+            <p>Rooms built for rest, practical convenience, and a smoother overnight experience.</p>
+        </article>
+        <article class="hotel-highlight">
+            <span class="hotel-highlight-icon"><i class="fa-solid fa-utensils"></i></span>
+            <h3>Dining close at hand</h3>
+            <p>{{ hotel.dining_info|default:"Restaurant access for guests who want food and hospitality in one place." }}</p>
+        </article>
+        <article class="hotel-highlight">
+            <span class="hotel-highlight-icon"><i class="fa-solid fa-calendar-check"></i></span>
+            <h3>Useful for many trip types</h3>
+            <p>{{ hotel.ideal_for|default:"Suitable for family visits, stopovers, business travel, and small gatherings." }}</p>
+        </article>
+    </section>
+
+    <section class="hotel-section">
+        <div class="hotel-story-grid">
+            <article class="hotel-card">
+                <h2>Why stay here</h2>
+                <p>
+                    {{ hotel.description|default:"This hotel is designed for guests who want a stay that feels easy to use and comfortable to return to. It works well for practical trips, short breaks, and visitors who want dependable hospitality without feeling locked into a purely formal city-hotel experience." }}
+                </p>
+            </article>
+
+            <article class="hotel-card">
+                <h2>Best suited for</h2>
+                <div class="hotel-story-list">
+                    <div class="hotel-story-item">
+                        <strong>Regional travelers</strong>
+                        <span>Useful as a comfortable base near Butwal, Lumbini routes, airport access, and onward travel connections.</span>
+                    </div>
+                    <div class="hotel-story-item">
+                        <strong>Family and short stays</strong>
+                        <span>Easy for guests who want comfort, convenience, and a setting that feels welcoming rather than overly rigid.</span>
+                    </div>
+                    <div class="hotel-story-item">
+                        <strong>Food and gathering visits</strong>
+                        <span>Works well for guests who may also be dining, meeting family, or staying around a small occasion.</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="hotel-section">
+        <div class="hotel-gallery-head">
+            <h2>Hotel Gallery</h2>
+            <p>Strong hotel pages help guests evaluate the property visually before they commit. This gallery gives a clearer sense of the stay environment, not just a single hero image.</p>
+        </div>
+
+        {% if lead_gallery_image %}
+        <div class="hotel-gallery-grid">
+            <div class="hotel-gallery-lead">
+                <figure>
+                    <img src="{{ lead_gallery_image.image.url }}" alt="{{ lead_gallery_image.title|default:hotel.name }}">
+                    {% if lead_gallery_image.is_featured %}
+                    <span class="hotel-gallery-badge"><i class="fa-solid fa-star"></i> Featured view</span>
+                    {% endif %}
+                    <figcaption class="hotel-gallery-caption">
+                        <strong>{{ lead_gallery_image.title|default:"A closer look at the hotel experience" }}</strong>
+                        <span>Use the gallery to understand the property atmosphere before booking.</span>
+                    </figcaption>
+                </figure>
+            </div>
+
+            <div class="hotel-gallery-side">
+                {% for image in supporting_gallery_images %}
+                <figure>
+                    <img src="{{ image.image.url }}" alt="{{ image.title|default:hotel.name }}">
+                    <figcaption class="hotel-gallery-mini-label">{{ image.title|default:"Hotel view" }}</figcaption>
+                </figure>
+                {% empty %}
+                <figure>
+                    {% if hotel and hotel.hero_image %}
+                    <img src="{{ hotel.hero_image.url }}" alt="{{ hotel.name }}">
+                    {% else %}
+                    <img src="{% static 'core/sections/hill1.jpg' %}" alt="Sirupata hotel">
+                    {% endif %}
+                    <figcaption class="hotel-gallery-mini-label">More views coming soon</figcaption>
+                </figure>
+                {% endfor %}
+            </div>
+        </div>
+        {% if gallery|length > 5 %}
+        <div class="hotel-gallery-more">
+            <i class="fa-solid fa-images"></i>
+            <span>{{ gallery|length }} curated hotel images available</span>
+        </div>
         {% endif %}
-    </div>
-</section>
-
-<!-- AMENITIES -->
-<section class="section" style="background:#faf9f6;">
-    <div class="subtitle" style="text-align:center;">Facilities</div>
-    <h2 class="title" style="text-align:center;">Hotel Amenities</h2>
-
-    <div class="amenities">
-        <div class="amenity">
-            <i class="fas fa-bed"></i>
-            <h4>Luxury Rooms</h4>
+        {% else %}
+        <div class="hotel-empty-gallery">
+            Hotel gallery images will appear here when added from the admin panel.
         </div>
-        <div class="amenity">
-            <i class="fas fa-wifi"></i>
-            <h4>Free Wi-Fi</h4>
-        </div>
-        <div class="amenity">
-            <i class="fas fa-utensils"></i>
-            <h4>Restaurant</h4>
-        </div>
-        <div class="amenity">
-            <i class="fas fa-car"></i>
-            <h4>Parking</h4>
-        </div>
-    </div>
-</section>
+        {% endif %}
+    </section>
 
- 
+    <section class="hotel-section">
+        <div class="hotel-story-grid">
+            <article class="hotel-card">
+                <h2>Stay details</h2>
+                <div class="hotel-detail-list">
+                    <div class="hotel-detail-item">
+                        <strong>Check-in</strong>
+                        <span>{{ hotel.check_in_time|default:"Please confirm with the property or booking desk." }}</span>
+                    </div>
+                    <div class="hotel-detail-item">
+                        <strong>Check-out</strong>
+                        <span>{{ hotel.check_out_time|default:"Please confirm with the property or booking desk." }}</span>
+                    </div>
+                    <div class="hotel-detail-item">
+                        <strong>Wi-Fi</strong>
+                        <span>{{ hotel.wifi_info|default:"Available for guest use." }}</span>
+                    </div>
+                </div>
+            </article>
 
-<!-- CTA -->
-<section class="section cta">
-    <h2 class="title">Ready to Experience R-Asad Hotel?</h2>
-    <a href="/bookings/">Check Availability</a>
-</section>
+            <article class="hotel-card">
+                <h2>Property essentials</h2>
+                <div class="hotel-detail-list">
+                    <div class="hotel-detail-item">
+                        <strong>Parking</strong>
+                        <span>{{ hotel.parking_info|default:"Please confirm parking availability directly with the property." }}</span>
+                    </div>
+                    <div class="hotel-detail-item">
+                        <strong>Dining</strong>
+                        <span>{{ hotel.dining_info|default:"Restaurant access available as part of the wider Sirupata experience." }}</span>
+                    </div>
+                    <div class="hotel-detail-item">
+                        <strong>Ideal for</strong>
+                        <span>{{ hotel.ideal_for|default:"Family stays, stopovers, regional travel, and guests who want a more comfortable base." }}</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
 
+    <section class="hotel-cta">
+        <div class="hotel-cta-card">
+            <h2>Plan your stay</h2>
+            <p>Once guests feel confident about the property, the next step should be simple. Keep the decision path clear and make booking easy from here.</p>
+            <a href="/bookings/" class="hotel-btn hotel-btn-primary">Check Availability</a>
+        </div>
+    </section>
+</div>
 {% endblock %}

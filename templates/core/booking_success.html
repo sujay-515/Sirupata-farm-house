@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+
+{% block title %}Booking Confirmed{% endblock %}
+
+{% block content %}
+<section style="max-width:760px;margin:90px auto;padding:0 20px;">
+  <div style="background:#fff;border-radius:18px;padding:40px 32px;box-shadow:0 18px 40px rgba(0,0,0,.08);text-align:center;">
+    <div style="width:64px;height:64px;border-radius:50%;background:#e7f4ec;color:#1f6b43;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;margin:0 auto 18px;">
+      ✓
+    </div>
+    <h1 style="font-family:'Playfair Display',serif;font-size:38px;margin:0 0 12px;color:#0f2e23;">Booking Request Sent</h1>
+    <p style="margin:0 auto 24px;max-width:46ch;color:#55625a;line-height:1.7;">
+      Your booking request has been submitted successfully. We will contact you shortly to confirm availability and finalize your stay.
+    </p>
+    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+      <a href="/bookings/" style="display:inline-block;padding:12px 22px;border-radius:8px;background:#c9a24d;color:#111;font-weight:600;">Book Another Stay</a>
+      <a href="/" style="display:inline-block;padding:12px 22px;border-radius:8px;background:#0f2e23;color:#fff;font-weight:600;">Back to Home</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

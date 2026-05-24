@@ -4,31 +4,42 @@
         <div class="review-card">
             <div class="stars-container mb-3">
                 {% for _ in review.stars %}
-                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star"></i>
                 {% endfor %}
-                <span class="ms-2 text-muted">{{ review.rating }}/5</span>
+                <span class="review-rating-score ms-2">{{ review.rating }}/5</span>
             </div>
             <h5 class="review-title fw-bold mb-3">
+                {% if review.review_title %}
                 "{{ review.review_title }}"
+                {% else %}
+                A memorable stay
+                {% endif %}
             </h5>
-            <p class="review-text text-muted mb-4" id="review-text-{{ review.id }}" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+            <p class="review-text mb-4" id="review-text-{{ review.id }}" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
                 {{ review.review_text }}
             </p>
             {% if review.review_text|length > 150 %}
-            <button class="btn btn-link p-0 text-primary" id="read-more-btn-{{ review.id }}" onclick="toggleReview({{ review.id }})">Read More</button>
+            <button class="btn btn-link p-0 review-read-more" id="read-more-btn-{{ review.id }}" onclick="toggleReview({{ review.id }})">Read More</button>
             {% endif %}
-            <small class="text-info mb-3 d-block" style="font-weight:600;">
-                Overall experience: {{ review.sentiment|default:review.get_sentiment_label }}
+            <small class="review-experience-chip mb-3 d-inline-flex">
+                {{ review.sentiment|default:review.get_sentiment_label }}
             </small>
-            <div class="reviewer-info d-flex align-items-center" style="gap: 0.4rem;">
-                <div class="reviewer-avatar" style="line-height: 1; margin-right: 0.4rem;">
-                    <i class="fas fa-user-circle fa-2x text-primary"></i>
+            <div class="reviewer-info d-flex align-items-center" style="gap: 0.65rem;">
+                <div class="reviewer-avatar" style="line-height: 1;">
+                    <i class="fas fa-user-circle fa-2x"></i>
                 </div>
                 <div>
                     <h6 class="fw-bold mb-0">{{ review.user_name }}</h6>
-                    <small class="text-muted"><i class="far fa-calendar-alt me-1"></i>{{ review.created_at|date:"F d, Y" }}</small>
+                    <small class="review-date"><i class="far fa-calendar-alt me-1"></i>{{ review.created_at|date:"F d, Y" }}</small>
                 </div>
             </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="review-card text-center">
+            <h5 class="review-title fw-bold mb-3">No published reviews yet</h5>
+            <p class="review-text text-muted mb-0">Approved guest reviews from the admin panel will appear here.</p>
         </div>
     </div>
     {% endfor %}

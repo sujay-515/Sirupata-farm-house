@@ -1,0 +1,282 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    :root {
+        --admin-brand-dark: #0f2e23;
+        --admin-brand-dark-soft: #1f4b3a;
+        --admin-brand-gold: #6f8f7d;
+        --admin-brand-gold-light: #dce7df;
+        --admin-brand-cream: #f4f6f5;
+        --admin-brand-cream-soft: #ffffff;
+        --admin-brand-border: #d6ddd9;
+        --admin-brand-text: #243329;
+        --admin-brand-text-soft: #64746a;
+        --admin-brand-shadow: rgba(19, 31, 23, 0.08);
+        --admin-brand-divider: #e3e8e5;
+        --admin-header-bg: #ffffff;
+        --admin-header-text: #243329;
+        --admin-sidebar-bg: #ffffff;
+        --admin-sidebar-border: #d6ddd9;
+        --admin-sidebar-section: #243329;
+        --admin-sidebar-link: #506257;
+        --admin-sidebar-hover-bg: #eef3ef;
+        --admin-sidebar-hover-text: #243329;
+        --admin-sidebar-filter-bg: #ffffff;
+        --admin-sidebar-filter-text: #243329;
+        --admin-sidebar-filter-border: #d6ddd9;
+    }
+
+    html[data-theme="dark"] {
+        --admin-brand-dark: #17241d;
+        --admin-brand-dark-soft: #213127;
+        --admin-brand-gold: #7ea08d;
+        --admin-brand-gold-light: #dce7df;
+        --admin-brand-cream: #17241d;
+        --admin-brand-cream-soft: #213127;
+        --admin-brand-border: #435245;
+        --admin-brand-text: #e6efe9;
+        --admin-brand-text-soft: #aab9b0;
+        --admin-brand-shadow: rgba(0, 0, 0, 0.24);
+        --admin-brand-divider: #39483a;
+        --admin-header-bg: #132018;
+        --admin-header-text: #eef3ef;
+        --admin-sidebar-bg: #1b2a21;
+        --admin-sidebar-border: #314036;
+        --admin-sidebar-section: #e8eeea;
+        --admin-sidebar-link: #c7d4cc;
+        --admin-sidebar-hover-bg: rgba(126, 160, 141, 0.14);
+        --admin-sidebar-hover-text: #ffffff;
+        --admin-sidebar-filter-bg: rgba(255, 255, 255, 0.06);
+        --admin-sidebar-filter-text: #e8eeea;
+        --admin-sidebar-filter-border: #415146;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        html:not([data-theme="light"]) {
+            --admin-brand-dark: #17241d;
+            --admin-brand-dark-soft: #213127;
+            --admin-brand-gold: #7ea08d;
+            --admin-brand-gold-light: #dce7df;
+            --admin-brand-cream: #17241d;
+            --admin-brand-cream-soft: #213127;
+            --admin-brand-border: #435245;
+            --admin-brand-text: #e6efe9;
+            --admin-brand-text-soft: #aab9b0;
+            --admin-brand-shadow: rgba(0, 0, 0, 0.24);
+            --admin-brand-divider: #39483a;
+            --admin-header-bg: #132018;
+            --admin-header-text: #eef3ef;
+            --admin-sidebar-bg: #1b2a21;
+            --admin-sidebar-border: #314036;
+            --admin-sidebar-section: #e8eeea;
+            --admin-sidebar-link: #c7d4cc;
+            --admin-sidebar-hover-bg: rgba(126, 160, 141, 0.14);
+            --admin-sidebar-hover-text: #ffffff;
+            --admin-sidebar-filter-bg: rgba(255, 255, 255, 0.06);
+            --admin-sidebar-filter-text: #e8eeea;
+            --admin-sidebar-filter-border: #415146;
+        }
+    }
+
+    body,
+    #container {
+        background: var(--admin-brand-cream);
+        color: var(--admin-brand-text);
+    }
+
+    a:link,
+    a:visited {
+        color: var(--admin-brand-dark-soft);
+    }
+
+    a:hover,
+    a:focus {
+        color: var(--admin-brand-gold);
+    }
+
+    #header {
+        background: var(--admin-header-bg);
+        color: var(--admin-header-text);
+        box-shadow: 0 12px 30px var(--admin-brand-shadow);
+    }
+
+    #header a:link,
+    #header a:visited,
+    #site-name a:link,
+    #site-name a:visited {
+        color: var(--admin-header-text);
+    }
+
+    #site-name a:hover,
+    #site-name a:focus,
+    #header a:hover,
+    #header a:focus {
+        color: #ffffff;
+    }
+
+    #user-tools,
+    #user-tools a,
+    #user-tools button {
+        color: var(--admin-header-text);
+    }
+
+    .module,
+    .inline-group,
+    .dashboard .module,
+    #content-related .module,
+    .submit-row,
+    .selector,
+    .selector .selector-filter,
+    .calendar,
+    .calendarbox,
+    .clockbox {
+        background: var(--admin-brand-cream);
+        border-color: var(--admin-brand-border);
+        color: var(--admin-brand-text);
+    }
+
+    .module h2,
+    .module caption,
+    .inline-group h2 {
+        background: linear-gradient(135deg, var(--admin-brand-dark) 0%, var(--admin-brand-dark-soft) 100%);
+        color: var(--admin-brand-gold-light);
+    }
+
+    div.breadcrumbs {
+        background: var(--admin-brand-cream-soft);
+        color: var(--admin-brand-text-soft);
+        border-bottom: 1px solid var(--admin-brand-border);
+    }
+
+    div.breadcrumbs a {
+        color: var(--admin-brand-dark-soft);
+    }
+
+    #nav-sidebar {
+        background: var(--admin-sidebar-bg);
+        border-right: 1px solid var(--admin-sidebar-border);
+    }
+
+    #nav-sidebar .current-app .section:link,
+    #nav-sidebar .current-app .section:visited,
+    #nav-sidebar .section:link,
+    #nav-sidebar .section:visited {
+        color: var(--admin-sidebar-section);
+    }
+
+    #nav-sidebar a {
+        color: var(--admin-sidebar-link);
+    }
+
+    #nav-sidebar a:hover,
+    #nav-sidebar a:focus {
+        color: var(--admin-sidebar-hover-text);
+        background: var(--admin-sidebar-hover-bg);
+    }
+
+    #nav-filter {
+        background: var(--admin-sidebar-filter-bg);
+        border: 1px solid var(--admin-sidebar-filter-border);
+        color: var(--admin-sidebar-filter-text);
+    }
+
+    #nav-filter::placeholder {
+        color: #9daf9f;
+    }
+
+    .button,
+    input[type=submit],
+    input[type=button],
+    .submit-row input,
+    a.button {
+        background: var(--admin-brand-gold);
+        border-color: #b58f42;
+        color: #111;
+        border-radius: 8px;
+    }
+
+    .button:hover,
+    .button:focus,
+    input[type=submit]:hover,
+    input[type=button]:hover,
+    .submit-row input:hover,
+    a.button:hover {
+        background: var(--admin-brand-gold-light);
+        border-color: var(--admin-brand-gold);
+        color: #111;
+    }
+
+    .button.default,
+    input[type=submit].default,
+    .submit-row input.default {
+        background: var(--admin-brand-dark-soft);
+        border-color: var(--admin-brand-dark-soft);
+        color: #fff7df;
+    }
+
+    .button.default:hover,
+    input[type=submit].default:hover,
+    .submit-row input.default:hover {
+        background: var(--admin-brand-dark);
+        border-color: var(--admin-brand-dark);
+    }
+
+    input,
+    textarea,
+    select,
+    .vTextField,
+    .vLargeTextField {
+        background: var(--admin-brand-cream);
+        color: var(--admin-brand-text);
+        border-color: var(--admin-brand-border);
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        border-color: var(--admin-brand-gold);
+        box-shadow: 0 0 0 1px var(--admin-brand-gold);
+    }
+
+    table thead th {
+        background: var(--admin-brand-cream-soft);
+        color: var(--admin-brand-dark);
+        border-bottom: 1px solid var(--admin-brand-border);
+    }
+
+    .results tbody tr:nth-child(odd),
+    .row1 {
+        background: color-mix(in srgb, var(--admin-brand-cream) 96%, var(--admin-brand-dark-soft) 4%);
+    }
+
+    .results tbody tr:nth-child(even),
+    .row2 {
+        background: var(--admin-brand-cream);
+    }
+
+    .results tbody tr:hover {
+        background: color-mix(in srgb, var(--admin-brand-cream-soft) 92%, var(--admin-brand-gold-light) 8%);
+    }
+
+    .paginator,
+    .object-tools a:link,
+    .object-tools a:visited {
+        color: var(--admin-brand-dark-soft);
+    }
+
+    .object-tools a:link,
+    .object-tools a:visited {
+        background: var(--admin-brand-cream-soft);
+        border-radius: 8px;
+    }
+
+    .object-tools a:hover,
+    .object-tools a:focus {
+        background: var(--admin-brand-gold);
+        color: #fff;
+    }
+</style>
+{% endblock %}

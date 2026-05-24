@@ -8,8 +8,8 @@ urlpatterns = [
     path('submit-review/', views.submit_review, name='submit_review'),
 
     path("bookings/", views.booking_form, name="booking"),
+    path("bookings/success/", views.booking_success, name="booking_success"),
     path("hotel/", views.hotel, name="hotel"),
     path('restaurant/', views.restaurant_view, name='restaurant'),
     path("contact/", views.contact, name="contact"),
 ]
-
