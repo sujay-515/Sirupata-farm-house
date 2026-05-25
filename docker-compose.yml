@@ -30,7 +30,6 @@ services:
     volumes:
       - .:/app
       - static_volume:/app/staticfiles
-      - media_volume:/app/media
     environment:
       - DB_ENGINE=django.db.backends.mysql
       - DB_NAME=sirupata_db
@@ -40,12 +39,13 @@ services:
       - DB_PORT=3306
       - EMAIL_HOST_USER=${EMAIL_HOST_USER}
       - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
-      - SECRET_KEY=${SECRET_KEY}
+      - SECRET_KEY=${SECRET_KEY:-dev-only-change-me}
       - DEBUG=True
       - SITE_URL=http://localhost:8000
       - SITE_NAME=Sirupata R Star
-    env_file:
-      - .env
+      - DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME:-admin}
+      - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL:-admin@example.com}
+      - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD:-admin12345}
     depends_on:
       - db
     networks:
@@ -55,6 +55,7 @@ services:
       echo 'Waiting for database...' &&
       sleep 10 &&
       python manage.py migrate &&
+      python manage.py shell -c \"from django.contrib.auth import get_user_model; import os; User = get_user_model(); username = os.environ.get('DJANGO_SUPERUSER_USERNAME'); email = os.environ.get('DJANGO_SUPERUSER_EMAIL'); password = os.environ.get('DJANGO_SUPERUSER_PASSWORD'); User.objects.filter(username=username).exists() or User.objects.create_superuser(username, email, password)\" &&
       python manage.py runserver 0.0.0.0:8000
       "
 
@@ -62,7 +63,6 @@ services:
 volumes:
   mysql_data:
   static_volume:
-  media_volume:
 
 # Network
 networks:
